@@ -17,22 +17,22 @@ const icons = {
 };
 
 const FEATURES = [
-  ["cv", "ATS-optimized CVs & resume analysis", "Upload a resume or answer five prompts. Get a premium, recruiter-ready CV with quantified achievements — and an ATS score with concrete fixes."],
-  ["letter", "Cover, motivation & scholarship letters", "Researched cover letters for real jobs, plus motivation letters for undergraduate, PhD and scholarship applications — grounded in live research on the employer or school."],
+  ["cv", "ATS-optimized CVs & resume analysis", "Upload a resume or answer five prompts. Get a premium, recruiter-ready CV with quantified achievements - and an ATS score with concrete fixes."],
+  ["letter", "Cover, motivation & scholarship letters", "Researched cover letters for real jobs, plus motivation letters for undergraduate, PhD and scholarship applications - grounded in live research on the employer or school."],
   ["search", "Live jobs & scholarships", "Current openings across LinkedIn, Indeed, Glassdoor, plus WHO, UNICEF, Gavi, the UN and other NGOs. Every link is verified in real time."],
-  ["book", "Verified learning links", "Curated free and paid courses from Coursera, edX, freeCodeCamp and more — each link checked live, so you never chase a broken or fake course."],
-  ["globe", "Nine African languages", "Guidance in English, French, Swahili, Arabic, Hausa, Pidgin, Portuguese, Spanish and Amharic — meet learners where they are."],
-  ["shield", "Grounded in real evidence", "Retrieval-augmented answers anchored in UNICEF, ILO, AfDB SEPA and UNESCO frameworks — advice that reflects real policy, not guesswork."],
+  ["book", "Verified learning links", "Curated free and paid courses from Coursera, edX, freeCodeCamp and more - each link checked live, so you never chase a broken or fake course."],
+  ["globe", "Nine African languages", "Guidance in English, French, Swahili, Arabic, Hausa, Pidgin, Portuguese, Spanish and Amharic - meet learners where they are."],
+  ["shield", "Grounded in real evidence", "Retrieval-augmented answers anchored in UNICEF, ILO, AfDB SEPA and UNESCO frameworks - advice that reflects real policy, not guesswork."],
 ];
 
 const STEPS = [
   ["Tell us about you", "Answer a few simple prompts, upload a CV, or describe the role, school or scholarship you're targeting."],
-  ["We research & generate", "The AI grounds every response in trusted frameworks and live web research on your target — no invented facts."],
+  ["We research & generate", "The AI grounds every response in trusted frameworks and live web research on your target - no invented facts."],
   ["Apply with confidence", "Download a polished CV or letter, open verified job and course links, and act on a clear, personalized plan."],
 ];
 
 const AUDIENCES = [
-  ["Youth", "First-time jobseekers building a CV, exploring careers, and finding free skills to grow — no experience required."],
+  ["Youth", "First-time jobseekers building a CV, exploring careers, and finding free skills to grow - no experience required."],
   ["Professionals", "Mid-career talent upgrading CVs, writing researched cover letters, and tracking live roles across companies and NGOs."],
   ["Students", "Applicants to undergraduate, master's, PhD and scholarship programmes, with motivation letters tailored to each school."],
 ];
@@ -70,7 +70,7 @@ export default function Home() {
           </h1>
           <p className="mx-auto mt-7 max-w-2xl text-lg leading-relaxed text-slate-600 sm:text-xl">
             Build an ATS-ready CV, generate researched cover and motivation letters, search live jobs and
-            scholarships, and find verified courses — all grounded in real evidence and available 24/7.
+            scholarships, and find verified courses - all grounded in real evidence and available 24/7.
           </p>
           <div className="mt-9 flex flex-col items-center justify-center gap-4 sm:flex-row">
             <Link href="/app" className="btn-primary text-base">Get started free →</Link>
@@ -79,7 +79,7 @@ export default function Home() {
           <p className="mt-6 text-sm text-slate-400">No credit card · No signup barriers · Works on any phone</p>
         </div>
 
-        {/* HERO VISUAL — drop a licensed photo at public/hero.jpg (Unsplash/Pexels recommended) */}
+        {/* HERO VISUAL - drop a licensed photo at public/hero.jpg (Unsplash/Pexels recommended) */}
         <div className="mx-auto max-w-5xl px-6 pb-16">
           <div className="relative aspect-[16/8] overflow-hidden rounded-3xl border border-slate-200 shadow-2xl shadow-blue-600/10">
             <div className="absolute inset-0 bg-gradient-to-br from-blue-100 to-indigo-100" />
@@ -107,7 +107,7 @@ export default function Home() {
         <div className="mx-auto max-w-2xl text-center">
           <span className="eyebrow">Everything in one place</span>
           <h2 className="mt-4 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">One assistant for your whole journey</h2>
-          <p className="mt-4 text-slate-600">From your first CV to a PhD scholarship letter — every tool is grounded, verified, and free.</p>
+          <p className="mt-4 text-slate-600">From your first CV to a PhD scholarship letter - every tool is grounded, verified, and free.</p>
         </div>
         <div className="mt-14 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {FEATURES.map(([ic, title, desc]) => (

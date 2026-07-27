@@ -4,9 +4,9 @@ import { Inter } from "next/font/google";
 const inter = Inter({ subsets: ["latin"], display: "swap" });
 
 export const metadata = {
-  title: "AfriCareer AI — Career & Academic Guidance for Africa",
+  title: "AfriCareer AI - Career & Academic Guidance for Africa",
   description:
-    "AI-powered career and academic guidance for African youth and professionals: ATS CVs, researched cover and motivation letters, live jobs and scholarships, and verified courses — grounded in UNICEF, ILO, AfDB and UNESCO evidence.",
+    "AI-powered career and academic guidance for African youth and professionals: ATS CVs, researched cover and motivation letters, live jobs and scholarships, and verified courses - grounded in UNICEF, ILO, AfDB and UNESCO evidence.",
 };
 
 export default function RootLayout({ children }) {

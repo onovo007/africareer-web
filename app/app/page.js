@@ -188,7 +188,7 @@ function About() {
     <div className="space-y-6">
       <ToolShell icon={I.about} title="About AfriCareer AI" desc="AI-powered career and academic guidance for African youth and professionals.">
         <p className="leading-relaxed text-slate-600">
-          AfriCareer AI puts a personal career and academic advisor in every young African's pocket — free,
+          AfriCareer AI puts a personal career and academic advisor in every young African's pocket - free,
           multilingual, and grounded in trusted global evidence. Our mission is simple: empower African youth
           and professionals with high-quality, accessible guidance, from a first CV to a PhD scholarship letter.
         </p>
@@ -244,7 +244,7 @@ function Guidance() {
     catch { setCvMsg("Something went wrong. Please try again."); }
   });
   return (
-    <ToolShell icon={I.guidance} title="Career Guidance & CV Builder" desc="Answer five prompts to get a tailored roadmap — and a premium, ATS-ready CV from the same answers.">
+    <ToolShell icon={I.guidance} title="Career Guidance & CV Builder" desc="Answer five prompts to get a tailored roadmap - and a premium, ATS-ready CV from the same answers.">
       <button onClick={() => setShowContact((s) => !s)} className="mb-4 text-sm font-semibold text-[var(--brand)]">
         {showContact ? "▾ " : "▸ "}Contact details (used on your CV)
       </button>
@@ -300,7 +300,7 @@ function Assistant() {
     try { const r = await api.assistant(q); setOut(r.text || ""); } catch { setOut("Something went wrong. Please try again."); }
   });
   return (
-    <ToolShell icon={I.assistant} title="AI Career Assistant" desc="Ask anything about careers, education, job search, or scholarships — grounded in UNICEF, ILO, AfDB and UNESCO frameworks.">
+    <ToolShell icon={I.assistant} title="AI Career Assistant" desc="Ask anything about careers, education, job search, or scholarships - grounded in UNICEF, ILO, AfDB and UNESCO frameworks.">
       <Label>Your question</Label>
       <textarea className="field" rows={4} value={q} onChange={(e) => setQ(e.target.value)} placeholder="e.g., What digital skills should I build for a data role in Lagos?" />
       <Submit loading={loading} onClick={run}>{loading ? "Thinking…" : "Ask the assistant"}</Submit>
@@ -331,7 +331,7 @@ function Resume() {
     try { await api.coverLetter({ resume_text: resumeText, position, company, city }); setClMsg("✓ Cover letter downloaded (.docx)."); } catch { setClMsg("Something went wrong."); }
   });
   return (
-    <ToolShell icon={I.resume} title="Professional Résumé Analysis" desc="Upload your résumé for expert feedback grounded in the African job market — then generate an improved CV and a researched cover letter.">
+    <ToolShell icon={I.resume} title="Professional Résumé Analysis" desc="Upload your résumé for expert feedback grounded in the African job market - then generate an improved CV and a researched cover letter.">
       <Field label="Upload your résumé (PDF, DOCX, TXT)">
         <input type="file" accept=".pdf,.docx,.txt" onChange={(e) => setFile(e.target.files?.[0] || null)}
           className="block w-full rounded-xl border border-slate-300 bg-white p-3 text-sm text-slate-600 file:mr-4 file:rounded-lg file:border-0 file:bg-blue-50 file:px-4 file:py-2 file:font-semibold file:text-[var(--brand)]" />
@@ -382,7 +382,7 @@ function Motivation() {
     catch { setMsg("Something went wrong. Please try again."); }
   });
   return (
-    <ToolShell icon={I.motivation} title="Motivation & Scholarship Letters" desc="Generate a strong letter for a university or scholarship application — grounded in your background and live research on the school.">
+    <ToolShell icon={I.motivation} title="Motivation & Scholarship Letters" desc="Generate a strong letter for a university or scholarship application - grounded in your background and live research on the school.">
       <div className="mb-6 rounded-2xl border border-slate-200 bg-slate-50/60 p-5">
         <h3 className="font-bold text-slate-900">Find live opportunities</h3>
         <p className="mt-1 text-sm text-slate-600">Search the web in real time for current scholarships, PhD positions, and admissions.</p>
@@ -419,7 +419,7 @@ function Jobs() {
     try { const r = await api.jobs({ role, discipline, location, period, experience, work_mode: workMode, include_ngo: ngo }); setResults(r.results || []); } catch { setResults([]); }
   });
   return (
-    <ToolShell icon={I.jobs} title="Live Job Search" desc="Current openings across LinkedIn, Indeed, Glassdoor and ZipRecruiter, plus WHO, UNICEF, Gavi, the UN and other NGOs — every link verified.">
+    <ToolShell icon={I.jobs} title="Live Job Search" desc="Current openings across LinkedIn, Indeed, Glassdoor and ZipRecruiter, plus WHO, UNICEF, Gavi, the UN and other NGOs - every link verified.">
       <div className="grid gap-4 sm:grid-cols-2">
         <Field label="Role / keywords"><input className="field" value={role} onChange={(e) => setRole(e.target.value)} placeholder="monitoring & evaluation, data scientist, nurse" /></Field>
         <Field label="Discipline"><input className="field" value={discipline} onChange={(e) => setDiscipline(e.target.value)} placeholder="public health, ICT, finance" /></Field>
