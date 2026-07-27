@@ -8,20 +8,40 @@ import remarkGfm from "remark-gfm";
 import { api } from "../../lib/api";
 import { SCHOOLS, REGIONS } from "../../lib/schools";
 
+/* ---------- icons ---------- */
+function Icon({ d, className = "h-6 w-6" }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" className={className} stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      {d}
+    </svg>
+  );
+}
+const I = {
+  about: <><circle cx="12" cy="12" r="10" /><path d="M12 16v-4M12 8h.01" /></>,
+  guidance: <><circle cx="12" cy="12" r="9" /><circle cx="12" cy="12" r="4" /><circle cx="12" cy="12" r="1" /></>,
+  learning: <><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" /><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z" /></>,
+  assistant: <><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" /></>,
+  resume: <><path d="M14 3v4a1 1 0 0 0 1 1h4" /><path d="M17 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2Z" /><path d="M9 13h6M9 17h4" /></>,
+  motivation: <><path d="M22 10 12 5 2 10l10 5 10-5Z" /><path d="M6 12v5c0 1.5 2.7 3 6 3s6-1.5 6-3v-5" /></>,
+  jobs: <><rect x="2" y="7" width="20" height="14" rx="2" /><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2" /></>,
+  globe: <><circle cx="12" cy="12" r="9" /><path d="M3 12h18M12 3a15 15 0 0 1 0 18M12 3a15 15 0 0 0 0 18" /></>,
+  shield: <><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z" /><path d="m9 12 2 2 4-4" /></>,
+};
+
 const TABS = [
-  ["about", "About"],
-  ["guidance", "Career Guidance"],
-  ["learning", "Learning Resources"],
-  ["assistant", "AI Assistant"],
-  ["resume", "Resume Analysis"],
-  ["motivation", "Motivation Letters"],
-  ["jobs", "Job Search"],
+  ["about", "About", I.about],
+  ["guidance", "Career Guidance", I.guidance],
+  ["learning", "Learning Resources", I.learning],
+  ["assistant", "AI Assistant", I.assistant],
+  ["resume", "Résumé Analysis", I.resume],
+  ["motivation", "Motivation Letters", I.motivation],
+  ["jobs", "Job Search", I.jobs],
 ];
 
 export default function AppPage() {
   const [tool, setTool] = useState("about");
   return (
-    <div className="min-h-screen bg-slate-50/50">
+    <div className="app-bg min-h-screen">
       <header className="sticky top-0 z-30 border-b border-slate-200 bg-white/85 backdrop-blur">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
           <Link href="/" className="text-lg font-extrabold tracking-tight text-slate-900">
@@ -31,29 +51,42 @@ export default function AppPage() {
         </div>
       </header>
 
-      <div className="border-b border-slate-200 bg-white px-4 py-3 md:hidden">
+      {/* Mobile tabs */}
+      <div className="border-b border-slate-200 bg-white/70 px-4 py-3 md:hidden">
         <div className="flex gap-2 overflow-x-auto">
           {TABS.map(([k, l]) => (
             <button key={k} onClick={() => setTool(k)}
-              className={`whitespace-nowrap rounded-full px-3.5 py-1.5 text-sm font-medium ${tool === k ? "bg-[var(--brand)] text-white" : "bg-slate-100 text-slate-600"}`}>{l}</button>
+              className={`whitespace-nowrap rounded-full px-3.5 py-1.5 text-sm font-medium ${tool === k ? "bg-[var(--brand)] text-white" : "bg-white text-slate-600 shadow-sm"}`}>{l}</button>
           ))}
         </div>
       </div>
 
       <div className="mx-auto flex max-w-6xl gap-8 px-6 py-8">
-        <aside className="hidden w-56 shrink-0 md:block">
-          <nav className="sticky top-24 space-y-1">
-            {TABS.map(([k, l]) => (
-              <button key={k} onClick={() => setTool(k)}
-                className={`block w-full rounded-lg px-3 py-2.5 text-left text-sm font-medium transition ${tool === k ? "bg-blue-50 text-[var(--brand)]" : "text-slate-600 hover:bg-slate-100"}`}>{l}</button>
-            ))}
+        {/* Sidebar */}
+        <aside className="hidden w-64 shrink-0 md:block">
+          <nav className="sticky top-24 rounded-2xl border border-slate-200 bg-white/80 p-2 shadow-sm backdrop-blur">
+            {TABS.map(([k, l, ic]) => {
+              const active = tool === k;
+              return (
+                <button key={k} onClick={() => setTool(k)}
+                  className={`flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-sm font-medium transition ${active ? "bg-blue-50 text-[var(--brand)]" : "text-slate-600 hover:bg-slate-50"}`}>
+                  <span className={active ? "text-[var(--brand)]" : "text-slate-400"}><Icon d={ic} className="h-5 w-5" /></span>
+                  {l}
+                </button>
+              );
+            })}
           </nav>
+          <div className="sticky top-[26rem] mt-4 rounded-2xl bg-gradient-to-br from-[var(--brand)] to-indigo-600 p-5 text-white shadow-lg shadow-blue-600/20">
+            <p className="text-sm font-semibold">Free & multilingual</p>
+            <p className="mt-1 text-xs text-blue-100">Every result is grounded in real evidence and verified live.</p>
+          </div>
         </aside>
 
+        {/* Content */}
         <main className="min-w-0 flex-1">
           <div className="mx-auto max-w-2xl">
             <AnimatePresence mode="wait">
-              <motion.div key={tool} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -6 }} transition={{ duration: 0.22 }}>
+              <motion.div key={tool} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} transition={{ duration: 0.24 }}>
                 {tool === "about" && <About />}
                 {tool === "guidance" && <Guidance />}
                 {tool === "learning" && <Learning />}
@@ -71,11 +104,17 @@ export default function AppPage() {
 }
 
 /* ---------- shared UI ---------- */
-function Head({ title, desc }) {
+function ToolShell({ icon, title, desc, children }) {
   return (
-    <div className="mb-6">
-      <h1 className="text-3xl font-bold tracking-tight text-slate-900">{title}</h1>
-      {desc && <p className="mt-2 text-slate-600">{desc}</p>}
+    <div className="tool-card">
+      <div className="mb-6 flex items-start gap-4">
+        <div className="icon-badge"><Icon d={icon} /></div>
+        <div>
+          <h1 className="text-2xl font-extrabold tracking-tight text-slate-900 sm:text-3xl">{title}</h1>
+          {desc && <p className="mt-1.5 text-slate-500">{desc}</p>}
+        </div>
+      </div>
+      {children}
     </div>
   );
 }
@@ -91,8 +130,7 @@ function Spinner() {
 }
 function Submit({ loading, onClick, children, secondary }) {
   return (
-    <button onClick={onClick} disabled={loading}
-      className={`${secondary ? "btn-ghost" : "btn-primary"} mt-1 disabled:opacity-60`}>
+    <button onClick={onClick} disabled={loading} className={`${secondary ? "btn-ghost" : "btn-primary"} mt-1 disabled:opacity-60`}>
       {loading && <Spinner />}{children}
     </button>
   );
@@ -118,12 +156,17 @@ function Markdown({ children }) {
     }}>{children}</ReactMarkdown>
   );
 }
-function Result({ children }) {
-  return <div className="mt-6 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">{children}</div>;
+function Result({ title, children }) {
+  return (
+    <div className="mt-6 rounded-2xl border border-slate-200 bg-gradient-to-b from-blue-50/40 to-white p-6">
+      {title && <h3 className="text-lg font-bold text-slate-900">{title}</h3>}
+      {children}
+    </div>
+  );
 }
 function LinkCard({ href, title, meta, body }) {
   return (
-    <li className="card">
+    <li className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
       <a href={href} target="_blank" rel="noreferrer" className="font-semibold text-[var(--brand)] hover:underline">{title}</a>
       {meta && <p className="mt-1 text-xs text-slate-500">{meta}</p>}
       {body && <p className="mt-1.5 text-sm text-slate-600">{body}</p>}
@@ -131,33 +174,57 @@ function LinkCard({ href, title, meta, body }) {
   );
 }
 
-/* ---------- About ---------- */
-const ABOUT_MD = `
-## About AfriCareer AI
-**AfriCareer AI** is an AI-powered career and academic guidance platform for African youth and professionals.
-
-### Mission
-Empower African youth and professionals with free, high-quality, accessible career and academic services.
-
-### Key Features
-- **9 Languages:** English, French, Swahili, Arabic, Hausa, Pidgin, Portuguese, Spanish, Amharic
-- **ATS-Optimized CV Builder & Resume Analysis** — clean, recruiter-ready output
-- **Cover, Motivation & Scholarship Letters** — grounded in live research on the employer or school
-- **Live Job Search** — current roles across job boards and NGOs / international organizations
-- **Verified Learning Links** — free and paid courses, checked live
-- **Real-time Opportunity & Scholarship Search** — current openings with requirements
-
-### Knowledge Base
-Grounded in authoritative frameworks and best-practice guides: **AfDB SEPA**, **UNICEF Education Strategy**, **ILO Global Employment Trends for Youth**, and **UNESCO** — plus motivation-letter, scholarship and PhD best practices.
-
-### Developer
-**Dr. Amobi Andrew Onovo** — PhD Global Health, MPH, PGDip Data Science · Quantium Insights LLC
-
-### Safety & Ethics
-Focused, appropriate guidance; no inappropriate content; culturally appropriate advice for the African context; evidence-based recommendations from trusted sources.
-`;
+/* ---------- About (visual) ---------- */
+const ABOUT_FEATURES = [
+  [I.resume, "ATS CVs & résumé analysis", "Recruiter-ready CVs with an ATS score and concrete fixes."],
+  [I.motivation, "Cover, motivation & scholarship letters", "Researched and grounded in live study of the employer or school."],
+  [I.jobs, "Live jobs & scholarships", "Verified openings across boards, NGOs, and the UN."],
+  [I.learning, "Verified learning links", "Free and paid courses, each checked live."],
+  [I.globe, "9 African languages", "Guidance in the language you are most comfortable in."],
+  [I.shield, "Grounded in real evidence", "UNICEF, ILO, AfDB and UNESCO frameworks via RAG."],
+];
 function About() {
-  return <div><Head title="About AfriCareer AI" /><Markdown>{ABOUT_MD}</Markdown></div>;
+  return (
+    <div className="space-y-6">
+      <ToolShell icon={I.about} title="About AfriCareer AI" desc="AI-powered career and academic guidance for African youth and professionals.">
+        <p className="leading-relaxed text-slate-600">
+          AfriCareer AI puts a personal career and academic advisor in every young African's pocket — free,
+          multilingual, and grounded in trusted global evidence. Our mission is simple: empower African youth
+          and professionals with high-quality, accessible guidance, from a first CV to a PhD scholarship letter.
+        </p>
+        <div className="mt-6 grid gap-4 sm:grid-cols-2">
+          {ABOUT_FEATURES.map(([ic, t, d]) => (
+            <div key={t} className="flex gap-3 rounded-2xl border border-slate-200 bg-white p-4">
+              <div className="icon-badge-sm"><Icon d={ic} className="h-5 w-5" /></div>
+              <div>
+                <p className="font-semibold text-slate-900">{t}</p>
+                <p className="mt-0.5 text-sm text-slate-600">{d}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </ToolShell>
+
+      <div className="tool-card">
+        <h2 className="text-lg font-bold text-slate-900">Grounded in trusted evidence</h2>
+        <p className="mt-1 text-sm text-slate-600">Answers are retrieval-augmented from authoritative frameworks and best-practice guides.</p>
+        <div className="mt-4 flex flex-wrap gap-2">
+          {["AfDB · SEPA", "UNICEF Education Strategy", "ILO Youth Employment", "UNESCO", "Scholarship & PhD best practices"].map((c) => (
+            <span key={c} className="rounded-full bg-blue-50 px-3 py-1 text-sm font-medium text-[var(--brand)]">{c}</span>
+          ))}
+        </div>
+      </div>
+
+      <div className="tool-card">
+        <h2 className="text-lg font-bold text-slate-900">Developer</h2>
+        <p className="mt-2 font-semibold text-slate-900">Dr. Amobi Andrew Onovo</p>
+        <p className="text-sm text-slate-600">PhD Global Health · MPH · PGDip Data Science · Quantium Insights LLC</p>
+        <p className="mt-4 text-sm text-slate-500">
+          Safety & ethics: focused, appropriate guidance; culturally relevant to the African context; evidence-based recommendations from trusted sources.
+        </p>
+      </div>
+    </div>
+  );
 }
 
 /* ---------- Career Guidance ---------- */
@@ -165,8 +232,7 @@ function Guidance() {
   const [answers, setAnswers] = useState("");
   const [name, setName] = useState(""); const [email, setEmail] = useState("");
   const [phone, setPhone] = useState(""); const [city, setCity] = useState(""); const [linkedin, setLinkedin] = useState("");
-  const [roadmap, setRoadmap] = useState(""); const [cvMsg, setCvMsg] = useState("");
-  const [showContact, setShowContact] = useState(false);
+  const [roadmap, setRoadmap] = useState(""); const [cvMsg, setCvMsg] = useState(""); const [showContact, setShowContact] = useState(false);
   const [gLoading, getGuidance] = useRun(async () => {
     if (!answers.trim()) return; setRoadmap("");
     try { const r = await api.careerGuidance(answers); setRoadmap(r.text || ""); } catch { setRoadmap("Something went wrong. Please try again."); }
@@ -178,13 +244,12 @@ function Guidance() {
     catch { setCvMsg("Something went wrong. Please try again."); }
   });
   return (
-    <div>
-      <Head title="Career Guidance & CV Builder" desc="Answer five simple prompts to get a tailored roadmap — and a premium, ATS-ready CV built from the same answers." />
-      <button onClick={() => setShowContact((s) => !s)} className="mb-4 text-sm font-medium text-[var(--brand)]">
+    <ToolShell icon={I.guidance} title="Career Guidance & CV Builder" desc="Answer five prompts to get a tailored roadmap — and a premium, ATS-ready CV from the same answers.">
+      <button onClick={() => setShowContact((s) => !s)} className="mb-4 text-sm font-semibold text-[var(--brand)]">
         {showContact ? "▾ " : "▸ "}Contact details (used on your CV)
       </button>
       {showContact && (
-        <div className="mb-5 grid gap-4 rounded-xl border border-slate-200 bg-white p-4 sm:grid-cols-2">
+        <div className="mb-5 grid gap-4 rounded-2xl border border-slate-200 bg-slate-50/60 p-4 sm:grid-cols-2">
           <Field label="Full name"><input className="field" value={name} onChange={(e) => setName(e.target.value)} placeholder="Amina Bello" /></Field>
           <Field label="Email"><input className="field" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="amina@email.com" /></Field>
           <Field label="Phone"><input className="field" value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="+234 800 000 0000" /></Field>
@@ -200,8 +265,8 @@ function Guidance() {
         <Submit loading={cvLoading} onClick={genCv} secondary>{cvLoading ? "Building…" : "Generate premium CV (.docx)"}</Submit>
       </div>
       {cvMsg && <p className="mt-4 font-medium text-slate-700">{cvMsg}</p>}
-      {roadmap && <Result><h3 className="text-lg font-semibold text-slate-900">Your Career Roadmap</h3><Markdown>{roadmap}</Markdown></Result>}
-    </div>
+      {roadmap && <Result title="Your Career Roadmap"><Markdown>{roadmap}</Markdown></Result>}
+    </ToolShell>
   );
 }
 
@@ -214,8 +279,7 @@ function Learning() {
     try { const r = await api.courses({ interest, level, cost_pref: cost }); setResults(r.results || []); } catch { setResults([]); }
   });
   return (
-    <div>
-      <Head title="Learning Resources" desc="Verified courses matched to your goals, with your free-or-paid choice enforced. Every link is checked live." />
+    <ToolShell icon={I.learning} title="Learning Resources" desc="Verified courses matched to your goals, with your free-or-paid choice enforced. Every link is checked live.">
       <div className="grid gap-4 sm:grid-cols-3">
         <div className="sm:col-span-3"><Field label="What do you want to learn?"><input className="field" value={interest} onChange={(e) => setInterest(e.target.value)} placeholder="data analysis, solar installation, tailoring & small business" /></Field></div>
         <Field label="Cost preference"><select className="field" value={cost} onChange={(e) => setCost(e.target.value)}><option>Free &amp; Paid</option><option>Free only</option><option>Paid only</option></select></Field>
@@ -224,7 +288,7 @@ function Learning() {
       <Submit loading={loading} onClick={run}>{loading ? "Finding…" : "Find courses"}</Submit>
       {results && results.length > 0 && <ul className="mt-6 space-y-4">{results.map((c, i) => <LinkCard key={i} href={c.url} title={c.title} meta={[c.provider, c.cost, c.level, c.duration].filter(Boolean).join(" · ")} body={c.why} />)}</ul>}
       {results && results.length === 0 && <p className="mt-6 text-slate-500">No results. Try a broader topic.</p>}
-    </div>
+    </ToolShell>
   );
 }
 
@@ -236,17 +300,16 @@ function Assistant() {
     try { const r = await api.assistant(q); setOut(r.text || ""); } catch { setOut("Something went wrong. Please try again."); }
   });
   return (
-    <div>
-      <Head title="AI Career Assistant" desc="Ask anything about careers, education, job search, or scholarships. Answers are grounded in UNICEF, ILO, AfDB and UNESCO frameworks." />
+    <ToolShell icon={I.assistant} title="AI Career Assistant" desc="Ask anything about careers, education, job search, or scholarships — grounded in UNICEF, ILO, AfDB and UNESCO frameworks.">
       <Label>Your question</Label>
       <textarea className="field" rows={4} value={q} onChange={(e) => setQ(e.target.value)} placeholder="e.g., What digital skills should I build for a data role in Lagos?" />
       <Submit loading={loading} onClick={run}>{loading ? "Thinking…" : "Ask the assistant"}</Submit>
       {out && <Result><Markdown>{out}</Markdown></Result>}
-    </div>
+    </ToolShell>
   );
 }
 
-/* ---------- Resume Analysis ---------- */
+/* ---------- Résumé Analysis ---------- */
 function Resume() {
   const [file, setFile] = useState(null); const [city, setCity] = useState(""); const [extra, setExtra] = useState("");
   const [resumeText, setResumeText] = useState(""); const [feedback, setFeedback] = useState("");
@@ -255,10 +318,8 @@ function Resume() {
   const [loading, analyze] = useRun(async () => {
     if (!file) return; setFeedback(""); setCvMsg(""); setClMsg("");
     try {
-      const ex = await api.extractText(file);
-      const text = ex.text || ""; setResumeText(text);
-      const r = await api.analyzeResume({ resume_text: text, city, additional_info: extra });
-      setFeedback(r.text || "");
+      const ex = await api.extractText(file); const text = ex.text || ""; setResumeText(text);
+      const r = await api.analyzeResume({ resume_text: text, city, additional_info: extra }); setFeedback(r.text || "");
     } catch { setFeedback("Could not read or analyze that file. Try a text-based PDF, DOCX, or TXT."); }
   });
   const [cvLoading, genCv] = useRun(async () => {
@@ -270,11 +331,10 @@ function Resume() {
     try { await api.coverLetter({ resume_text: resumeText, position, company, city }); setClMsg("✓ Cover letter downloaded (.docx)."); } catch { setClMsg("Something went wrong."); }
   });
   return (
-    <div>
-      <Head title="Professional Resume Analysis" desc="Upload your résumé for expert feedback grounded in the African job market — then generate an improved CV and a researched cover letter." />
+    <ToolShell icon={I.resume} title="Professional Résumé Analysis" desc="Upload your résumé for expert feedback grounded in the African job market — then generate an improved CV and a researched cover letter.">
       <Field label="Upload your résumé (PDF, DOCX, TXT)">
         <input type="file" accept=".pdf,.docx,.txt" onChange={(e) => setFile(e.target.files?.[0] || null)}
-          className="block w-full rounded-xl border border-slate-300 p-3 text-sm text-slate-600 file:mr-4 file:rounded-lg file:border-0 file:bg-blue-50 file:px-4 file:py-2 file:font-semibold file:text-[var(--brand)]" />
+          className="block w-full rounded-xl border border-slate-300 bg-white p-3 text-sm text-slate-600 file:mr-4 file:rounded-lg file:border-0 file:bg-blue-50 file:px-4 file:py-2 file:font-semibold file:text-[var(--brand)]" />
       </Field>
       <div className="mt-4 grid gap-4 sm:grid-cols-2">
         <Field label="Your city (optional)"><input className="field" value={city} onChange={(e) => setCity(e.target.value)} placeholder="Lagos, Nairobi, Accra" /></Field>
@@ -283,9 +343,9 @@ function Resume() {
       <Submit loading={loading} onClick={analyze}>{loading ? "Analyzing…" : "Analyze résumé"}</Submit>
       {feedback && (
         <>
-          <Result><h3 className="text-lg font-semibold text-slate-900">Your Résumé Analysis</h3><Markdown>{feedback}</Markdown></Result>
-          <div className="mt-6 rounded-2xl border border-slate-200 bg-slate-50/70 p-5">
-            <h3 className="font-semibold text-slate-900">Generate premium documents</h3>
+          <Result title="Your Résumé Analysis"><Markdown>{feedback}</Markdown></Result>
+          <div className="mt-6 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+            <h3 className="font-bold text-slate-900">Generate premium documents</h3>
             <div className="mt-3 grid gap-4 sm:grid-cols-2">
               <Field label="Target position (for cover letter)"><input className="field" value={position} onChange={(e) => setPosition(e.target.value)} placeholder="Data Analyst" /></Field>
               <Field label="Target company / organization"><input className="field" value={company} onChange={(e) => setCompany(e.target.value)} placeholder="WHO, Dangote, Safaricom" /></Field>
@@ -299,7 +359,7 @@ function Resume() {
           </div>
         </>
       )}
-    </div>
+    </ToolShell>
   );
 }
 
@@ -311,14 +371,10 @@ function Motivation() {
     if (!oppField.trim()) return; setOpps(null);
     try { const r = await api.opportunities({ opp_type: oppType, field: oppField, region: oppRegion }); setOpps(r.results || []); } catch { setOpps([]); }
   });
-
   const [category, setCategory] = useState("Undergraduate program");
   const [region, setRegion] = useState("Africa");
   const [school, setSchool] = useState(SCHOOLS["Africa"][0]);
-  const [custom, setCustom] = useState("");
-  const [programme, setProgramme] = useState("");
-  const [background, setBackground] = useState("");
-  const [msg, setMsg] = useState("");
+  const [custom, setCustom] = useState(""); const [programme, setProgramme] = useState(""); const [background, setBackground] = useState(""); const [msg, setMsg] = useState("");
   const [loading, gen] = useRun(async () => {
     const inst = custom.trim() || (school.startsWith("Other") ? "" : school);
     if (!inst || !programme.trim() || !background.trim()) return; setMsg("");
@@ -326,11 +382,9 @@ function Motivation() {
     catch { setMsg("Something went wrong. Please try again."); }
   });
   return (
-    <div>
-      <Head title="Motivation & Scholarship Letters" desc="Generate a strong letter for a university or scholarship application — grounded in your real background and live research on the school." />
-
-      <div className="mb-6 rounded-2xl border border-slate-200 bg-slate-50/70 p-5">
-        <h3 className="font-semibold text-slate-900">Find live opportunities</h3>
+    <ToolShell icon={I.motivation} title="Motivation & Scholarship Letters" desc="Generate a strong letter for a university or scholarship application — grounded in your background and live research on the school.">
+      <div className="mb-6 rounded-2xl border border-slate-200 bg-slate-50/60 p-5">
+        <h3 className="font-bold text-slate-900">Find live opportunities</h3>
         <p className="mt-1 text-sm text-slate-600">Search the web in real time for current scholarships, PhD positions, and admissions.</p>
         <div className="mt-3 grid gap-4 sm:grid-cols-3">
           <Field label="Type"><select className="field" value={oppType} onChange={(e) => setOppType(e.target.value)}><option>Scholarship</option><option>PhD / Doctorate</option><option>Undergraduate / Masters</option></select></Field>
@@ -341,7 +395,6 @@ function Motivation() {
         {opps && opps.length > 0 && <ul className="mt-4 space-y-3">{opps.map((o, i) => <LinkCard key={i} href={o.url} title={o.title} />)}</ul>}
         {opps && opps.length === 0 && <p className="mt-4 text-sm text-slate-500">No verified results. Try a broader field or different region.</p>}
       </div>
-
       <div className="grid gap-4 sm:grid-cols-3">
         <Field label="Applying for"><select className="field" value={category} onChange={(e) => setCategory(e.target.value)}><option>Undergraduate program</option><option>PhD / Doctorate position</option><option>Scholarship</option></select></Field>
         <Field label="Region"><select className="field" value={region} onChange={(e) => { setRegion(e.target.value); setSchool(SCHOOLS[e.target.value][0]); }}>{REGIONS.map((r) => <option key={r}>{r}</option>)}</select></Field>
@@ -352,23 +405,21 @@ function Motivation() {
       <div className="mt-4"><Field label="Your background & motivation"><textarea className="field" rows={7} value={background} onChange={(e) => setBackground(e.target.value)} placeholder="Your education and grades, relevant experience and achievements, why this programme and school, and your goals." /></Field></div>
       <Submit loading={loading} onClick={gen}>{loading ? "Drafting…" : "Generate letter (.docx)"}</Submit>
       {msg && <p className="mt-4 font-medium text-slate-700">{msg}</p>}
-    </div>
+    </ToolShell>
   );
 }
 
 /* ---------- Job Search ---------- */
 function Jobs() {
   const [role, setRole] = useState(""); const [discipline, setDiscipline] = useState(""); const [location, setLocation] = useState("");
-  const [period, setPeriod] = useState("Any time"); const [experience, setExperience] = useState("Any"); const [workMode, setWorkMode] = useState("Any");
-  const [ngo, setNgo] = useState(true);
+  const [period, setPeriod] = useState("Any time"); const [experience, setExperience] = useState("Any"); const [workMode, setWorkMode] = useState("Any"); const [ngo, setNgo] = useState(true);
   const [results, setResults] = useState(null);
   const [loading, run] = useRun(async () => {
     if (!role.trim()) return; setResults(null);
     try { const r = await api.jobs({ role, discipline, location, period, experience, work_mode: workMode, include_ngo: ngo }); setResults(r.results || []); } catch { setResults([]); }
   });
   return (
-    <div>
-      <Head title="Live Job Search" desc="Current openings across LinkedIn, Indeed, Glassdoor and ZipRecruiter, plus WHO, UNICEF, Gavi, the UN and other NGOs. Every link is verified." />
+    <ToolShell icon={I.jobs} title="Live Job Search" desc="Current openings across LinkedIn, Indeed, Glassdoor and ZipRecruiter, plus WHO, UNICEF, Gavi, the UN and other NGOs — every link verified.">
       <div className="grid gap-4 sm:grid-cols-2">
         <Field label="Role / keywords"><input className="field" value={role} onChange={(e) => setRole(e.target.value)} placeholder="monitoring & evaluation, data scientist, nurse" /></Field>
         <Field label="Discipline"><input className="field" value={discipline} onChange={(e) => setDiscipline(e.target.value)} placeholder="public health, ICT, finance" /></Field>
@@ -384,6 +435,6 @@ function Jobs() {
       <Submit loading={loading} onClick={run}>{loading ? "Searching…" : "Search jobs"}</Submit>
       {results && results.length > 0 && <ul className="mt-6 space-y-4">{results.map((j, i) => <LinkCard key={i} href={j.url} title={j.title} meta={`Source: ${j.source}`} body={j.snippet} />)}</ul>}
       {results && results.length === 0 && <p className="mt-6 text-slate-500">No verified openings this time. Try broader keywords, a different location, or a wider date range.</p>}
-    </div>
+    </ToolShell>
   );
 }
