@@ -141,27 +141,57 @@ function SignIn({ onDone }) {
     api.event({ event: "user_visit", user_name: user.name, country: user.country });
     onDone(user);
   }
+  const chips = ["ATS CVs", "Cover & motivation letters", "Live jobs & scholarships", "Verified courses", "9 languages"];
   return (
-    <div className="app-bg flex min-h-screen items-center justify-center px-6 py-12">
-      <div className="w-full max-w-md">
-        <div className="mb-5 rounded-3xl bg-gradient-to-br from-[var(--brand)] to-indigo-600 p-8 text-center text-white shadow-xl shadow-blue-600/20">
-          <h1 className="text-2xl font-extrabold">AfriCareer AI</h1>
-          <p className="mt-2 text-sm text-blue-100">Career and academic guidance for African youth and professionals. Free, multilingual, and built for you.</p>
-        </div>
-        <div className="tool-card">
-          <h2 className="text-xl font-bold text-slate-900">Sign in to continue</h2>
-          <div className="mt-4 space-y-4">
-            <Field label="Full name"><input className="field" value={name} onChange={(e) => setName(e.target.value)} placeholder="e.g., Amina Bello" /></Field>
-            <Field label="Country"><select className="field" value={country} onChange={(e) => setCountry(e.target.value)}>{COUNTRIES.map((c) => <option key={c}>{c}</option>)}</select></Field>
-            <Field label="Email (optional)"><input className="field" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@email.com" /></Field>
-            <label className="flex items-start gap-2 text-sm text-slate-600">
-              <input type="checkbox" checked={consent} onChange={(e) => setConsent(e.target.checked)} className="mt-1 h-4 w-4" />
-              I agree that my name and country may be stored to help improve this free service.
-            </label>
-            {err && <p className="text-sm text-red-600">{err}</p>}
-            <button onClick={enter} className="btn-primary w-full">Enter AfriCareer AI</button>
-            <p className="text-xs text-slate-400">Free to use. We store your name and country (and email if given) only to improve the service. We never sell your data or share it externally.</p>
-          </div>
+    <div className="relative min-h-screen overflow-hidden">
+      <div className="absolute inset-0 bg-gradient-to-br from-[#182a7a] via-[var(--brand)] to-indigo-700" />
+      <motion.div className="pointer-events-none absolute -left-24 top-8 h-80 w-80 rounded-full bg-sky-400/30 blur-3xl"
+        animate={{ x: [0, 50, 0], y: [0, 30, 0] }} transition={{ duration: 13, repeat: Infinity, ease: "easeInOut" }} />
+      <motion.div className="pointer-events-none absolute right-0 top-1/4 h-96 w-96 rounded-full bg-indigo-400/30 blur-3xl"
+        animate={{ x: [0, -40, 0], y: [0, 50, 0] }} transition={{ duration: 16, repeat: Infinity, ease: "easeInOut" }} />
+      <motion.div className="pointer-events-none absolute -bottom-16 left-1/3 h-80 w-80 rounded-full bg-blue-300/20 blur-3xl"
+        animate={{ scale: [1, 1.25, 1] }} transition={{ duration: 11, repeat: Infinity, ease: "easeInOut" }} />
+
+      <div className="relative z-10 mx-auto flex min-h-screen max-w-6xl items-center px-6 py-10">
+        <div className="grid w-full items-center gap-10 lg:grid-cols-2">
+          <motion.div initial={{ opacity: 0, x: -24 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5 }} className="hidden text-white lg:block">
+            <span className="inline-block rounded-full bg-white/15 px-3 py-1 text-xs font-semibold backdrop-blur">Free · Multilingual · Built for Africa</span>
+            <h1 className="mt-5 text-5xl font-extrabold leading-tight">AfriCareer <span className="text-sky-200">AI</span></h1>
+            <p className="mt-4 max-w-md text-lg text-blue-100">Career and academic guidance for African youth and professionals. Build CVs, write letters, and find jobs, courses and scholarships - all in one place.</p>
+            <div className="mt-6 flex flex-wrap gap-2">
+              {chips.map((c) => <span key={c} className="rounded-full bg-white/15 px-3 py-1 text-sm text-white backdrop-blur">{c}</span>)}
+            </div>
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.2 }}
+              className="mt-8 overflow-hidden rounded-3xl border border-white/20 shadow-2xl">
+              <div className="aspect-[16/10] bg-cover bg-center" style={{ backgroundImage: "url('/hero.jpg')" }} />
+            </motion.div>
+          </motion.div>
+
+          <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.1 }} className="mx-auto w-full max-w-md">
+            <div className="mb-5 text-center lg:hidden">
+              <h1 className="text-3xl font-extrabold text-white">AfriCareer <span className="text-sky-200">AI</span></h1>
+              <p className="mt-1 text-sm text-blue-100">Career & academic guidance, built for you.</p>
+            </div>
+            <div className="rounded-3xl bg-white/95 p-8 shadow-2xl backdrop-blur">
+              <h2 className="text-2xl font-bold text-slate-900">Sign in to continue</h2>
+              <p className="mt-1 text-sm text-slate-500">Takes 10 seconds - no password needed.</p>
+              <div className="mt-5 space-y-4">
+                <Field label="Full name"><input className="field" value={name} onChange={(e) => setName(e.target.value)} placeholder="e.g., Amina Bello" /></Field>
+                <Field label="Country"><select className="field" value={country} onChange={(e) => setCountry(e.target.value)}>{COUNTRIES.map((c) => <option key={c}>{c}</option>)}</select></Field>
+                <Field label="Email (optional)"><input className="field" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@email.com" /></Field>
+                <label className="flex items-start gap-2 text-sm text-slate-600">
+                  <input type="checkbox" checked={consent} onChange={(e) => setConsent(e.target.checked)} className="mt-1 h-4 w-4" />
+                  I agree that my name and country may be stored to help improve this free service.
+                </label>
+                {err && <p className="text-sm text-red-600">{err}</p>}
+                <motion.button whileHover={{ y: -2 }} whileTap={{ scale: 0.98 }} onClick={enter}
+                  className="w-full rounded-xl bg-[var(--brand)] px-6 py-3 font-semibold text-white shadow-lg shadow-blue-900/30 transition hover:bg-[var(--brand-dark)]">
+                  Enter AfriCareer AI
+                </motion.button>
+                <p className="text-xs text-slate-400">Free to use. We store your name and country (and email if given) only to improve the service. We never sell your data or share it externally.</p>
+              </div>
+            </div>
+          </motion.div>
         </div>
       </div>
     </div>
