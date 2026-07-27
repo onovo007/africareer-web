@@ -1,12 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { api } from "../../lib/api";
 import { SCHOOLS, REGIONS } from "../../lib/schools";
+import { COUNTRIES } from "../../lib/countries";
 
 /* ---------- icons ---------- */
 function Icon({ d, className = "h-6 w-6" }) {
@@ -39,7 +40,23 @@ const TABS = [
 ];
 
 export default function AppPage() {
+  const [user, setUser] = useState(null);
+  const [ready, setReady] = useState(false);
   const [tool, setTool] = useState("about");
+
+  useEffect(() => {
+    try { const u = JSON.parse(localStorage.getItem("aca_user") || "null"); if (u && u.name) setUser(u); } catch {}
+    setReady(true);
+  }, []);
+  useEffect(() => {
+    if (user) api.event({ event: "section_accessed", user_name: user.name, country: user.country, details: tool });
+  }, [tool, user]);
+
+  function signOut() { try { localStorage.removeItem("aca_user"); } catch {} setUser(null); }
+
+  if (!ready) return <div className="app-bg min-h-screen" />;
+  if (!user) return <SignIn onDone={setUser} />;
+
   return (
     <div className="app-bg min-h-screen">
       <header className="sticky top-0 z-30 border-b border-slate-200 bg-white/85 backdrop-blur">
@@ -47,7 +64,11 @@ export default function AppPage() {
           <Link href="/" className="text-lg font-extrabold tracking-tight text-slate-900">
             AfriCareer <span className="text-[var(--brand)]">AI</span>
           </Link>
-          <Link href="/" className="text-sm font-medium text-slate-500 hover:text-slate-900">← Home</Link>
+          <div className="flex items-center gap-4">
+            <span className="hidden text-sm text-slate-500 sm:inline">Hi, {user.name.split(" ")[0]}</span>
+            <button onClick={signOut} className="text-sm font-medium text-slate-500 hover:text-slate-900">Sign out</button>
+            <Link href="/" className="text-sm font-medium text-slate-500 hover:text-slate-900">Home</Link>
+          </div>
         </div>
       </header>
 
@@ -98,6 +119,50 @@ export default function AppPage() {
             </AnimatePresence>
           </div>
         </main>
+      </div>
+    </div>
+  );
+}
+
+/* ---------- sign-in gate ---------- */
+function SignIn({ onDone }) {
+  const [name, setName] = useState("");
+  const [country, setCountry] = useState(COUNTRIES[0]);
+  const [email, setEmail] = useState("");
+  const [consent, setConsent] = useState(false);
+  const [err, setErr] = useState("");
+  function enter() {
+    if (!name.trim()) return setErr("Please enter your name.");
+    if (country === COUNTRIES[0]) return setErr("Please select your country.");
+    if (!consent) return setErr("Please tick the consent box to continue.");
+    const user = { name: name.trim(), country, email: email.trim() };
+    try { localStorage.setItem("aca_user", JSON.stringify(user)); } catch {}
+    api.event({ event: "login", user_name: user.name, country: user.country, details: user.email });
+    api.event({ event: "user_visit", user_name: user.name, country: user.country });
+    onDone(user);
+  }
+  return (
+    <div className="app-bg flex min-h-screen items-center justify-center px-6 py-12">
+      <div className="w-full max-w-md">
+        <div className="mb-5 rounded-3xl bg-gradient-to-br from-[var(--brand)] to-indigo-600 p-8 text-center text-white shadow-xl shadow-blue-600/20">
+          <h1 className="text-2xl font-extrabold">AfriCareer AI</h1>
+          <p className="mt-2 text-sm text-blue-100">Career and academic guidance for African youth and professionals. Free, multilingual, and built for you.</p>
+        </div>
+        <div className="tool-card">
+          <h2 className="text-xl font-bold text-slate-900">Sign in to continue</h2>
+          <div className="mt-4 space-y-4">
+            <Field label="Full name"><input className="field" value={name} onChange={(e) => setName(e.target.value)} placeholder="e.g., Amina Bello" /></Field>
+            <Field label="Country"><select className="field" value={country} onChange={(e) => setCountry(e.target.value)}>{COUNTRIES.map((c) => <option key={c}>{c}</option>)}</select></Field>
+            <Field label="Email (optional)"><input className="field" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@email.com" /></Field>
+            <label className="flex items-start gap-2 text-sm text-slate-600">
+              <input type="checkbox" checked={consent} onChange={(e) => setConsent(e.target.checked)} className="mt-1 h-4 w-4" />
+              I agree that my name and country may be stored to help improve this free service.
+            </label>
+            {err && <p className="text-sm text-red-600">{err}</p>}
+            <button onClick={enter} className="btn-primary w-full">Enter AfriCareer AI</button>
+            <p className="text-xs text-slate-400">Free to use. We store your name and country (and email if given) only to improve the service. We never sell your data or share it externally.</p>
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -257,9 +322,25 @@ function Guidance() {
           <div className="sm:col-span-2"><Field label="LinkedIn / Portfolio (optional)"><input className="field" value={linkedin} onChange={(e) => setLinkedin(e.target.value)} placeholder="linkedin.com/in/aminabello" /></Field></div>
         </div>
       )}
-      <Label>Answer these 5 prompts</Label>
+      <details open className="mb-4 rounded-2xl border border-slate-200 bg-slate-50/60 p-4">
+        <summary className="cursor-pointer select-none font-semibold text-slate-900">Tell us about yourself - the 5 questions</summary>
+        <div className="mt-3 space-y-3 text-sm">
+          <p className="text-slate-600">Please answer these 5 simple questions (number your answers 1-5):</p>
+          {[
+            ["1. What are you interested in?", "Example: I like computers, helping people, cooking, fixing things, etc."],
+            ["2. What are you good at? What skills do you have?", "Example: I'm good at math, I can speak 3 languages, I know how to use Excel, etc."],
+            ["3. What work or experience do you have?", "Include ANY experience: part-time jobs, helping a family business, volunteer work, school projects, etc."],
+            ["4. What is your education?", "Example: I finished secondary school in 2020, I'm studying at university, I completed a training course, etc."],
+            ["5. What job do you want? What are your goals?", "Example: I want to work in a bank, I want to be a nurse, I want to start my own business, etc."],
+          ].map(([q, ex]) => (
+            <p key={q}><strong className="text-slate-800">{q}</strong><br /><span className="text-slate-500">({ex})</span></p>
+          ))}
+          <p className="text-slate-500">Write your answers below. Be honest - there are no wrong answers.</p>
+        </div>
+      </details>
+      <Label>Your answers (number them 1-5)</Label>
       <textarea className="field" rows={8} value={answers} onChange={(e) => setAnswers(e.target.value)}
-        placeholder={"1. What are you interested in?\n2. What are you good at / your skills?\n3. What experience do you have (any kind)?\n4. Your education?\n5. What job or goal do you want?"} />
+        placeholder={"1. I'm interested in...\n2. My strengths...\n3. I have experience...\n4. My education...\n5. My goals..."} />
       <div className="mt-2 flex flex-wrap gap-3">
         <Submit loading={gLoading} onClick={getGuidance}>{gLoading ? "Preparing…" : "Get career guidance"}</Submit>
         <Submit loading={cvLoading} onClick={genCv} secondary>{cvLoading ? "Building…" : "Generate premium CV (.docx)"}</Submit>
