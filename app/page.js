@@ -79,6 +79,16 @@ export default function Home() {
           <p className="mt-6 text-sm text-slate-400">No credit card · No signup barriers · Works on any phone</p>
         </div>
 
+        {/* HERO VISUAL — drop a licensed photo at public/hero.jpg (Unsplash/Pexels recommended) */}
+        <div className="mx-auto max-w-5xl px-6 pb-16">
+          <div className="relative aspect-[16/8] overflow-hidden rounded-3xl border border-slate-200 shadow-2xl shadow-blue-600/10">
+            <div className="absolute inset-0 bg-gradient-to-br from-blue-100 to-indigo-100" />
+            <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: "url('/hero.jpg')" }} />
+            <div className="absolute inset-0 bg-gradient-to-tr from-[var(--brand)]/20 via-transparent to-indigo-400/10" />
+            <div className="absolute inset-x-0 bottom-0 h-1/4 bg-gradient-to-t from-white/70 to-transparent" />
+          </div>
+        </div>
+
         {/* STATS BAND */}
         <div className="mx-auto max-w-5xl px-6 pb-16">
           <div className="grid grid-cols-2 gap-4 rounded-3xl border border-slate-200 bg-white p-8 shadow-sm sm:grid-cols-4">
