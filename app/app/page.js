@@ -202,6 +202,12 @@ function SignIn({ onDone }) {
                 <p className="text-xs text-slate-400">Free to use. We store your name and country (and email if given) only to improve the service. We never sell your data or share it externally.</p>
               </div>
             </div>
+            <div className="mt-5 flex justify-center">
+              <div className="flex items-center gap-2 rounded-full bg-white/90 px-4 py-1.5 text-xs font-medium text-slate-600 shadow-lg">
+                Powered by
+                <span className="inline-block h-5 w-16 bg-contain bg-center bg-no-repeat" style={{ backgroundImage: "url('/logo.png')" }} aria-label="Quantium Insights" />
+              </div>
+            </div>
           </motion.div>
         </div>
       </div>

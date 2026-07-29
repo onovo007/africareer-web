@@ -1,4 +1,5 @@
 import Link from "next/link";
+import HeroCarousel from "../components/HeroCarousel";
 
 function Icon({ path }) {
   return (
@@ -79,14 +80,9 @@ export default function Home() {
           <p className="mt-6 text-sm text-slate-400">No credit card · No signup barriers · Works on any phone</p>
         </div>
 
-        {/* HERO VISUAL - drop a licensed photo at public/hero.jpg (Unsplash/Pexels recommended) */}
+        {/* HERO VISUAL - rotating carousel; add hero.jpg, hero1.jpg, hero2.jpg... in public/ */}
         <div className="mx-auto max-w-5xl px-6 pb-16">
-          <div className="relative aspect-[16/8] overflow-hidden rounded-3xl border border-slate-200 shadow-2xl shadow-blue-600/10">
-            <div className="absolute inset-0 bg-gradient-to-br from-blue-100 to-indigo-100" />
-            <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: "url('/hero.jpg')" }} />
-            <div className="absolute inset-0 bg-gradient-to-tr from-[var(--brand)]/20 via-transparent to-indigo-400/10" />
-            <div className="absolute inset-x-0 bottom-0 h-1/4 bg-gradient-to-t from-white/70 to-transparent" />
-          </div>
+          <HeroCarousel />
         </div>
 
         {/* STATS BAND */}
@@ -186,7 +182,11 @@ export default function Home() {
       {/* FOOTER */}
       <footer className="border-t border-slate-100">
         <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-6 py-10 text-sm text-slate-500 sm:flex-row">
-          <span className="font-bold text-slate-800">AfriCareer <span className="text-[var(--brand)]">AI</span></span>
+          <div className="flex items-center gap-3">
+            <span className="font-bold text-slate-800">AfriCareer <span className="text-[var(--brand)]">AI</span></span>
+            <span className="text-slate-300">·</span>
+            <span className="inline-block h-9 w-28 bg-contain bg-left bg-no-repeat" style={{ backgroundImage: "url('/logo.png')" }} aria-label="Quantium Insights" title="Quantium Insights" />
+          </div>
           <span>© {new Date().getFullYear()} Quantium Insights LLC · Empowering African talent</span>
         </div>
       </footer>
