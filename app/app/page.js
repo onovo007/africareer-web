@@ -39,17 +39,24 @@ const TABS = [
   ["jobs", "Job Search", I.jobs],
 ];
 
+const LANGUAGES = [
+  ["English", "English"], ["Français", "French"], ["Kiswahili", "Swahili"],
+  ["العربية", "Arabic"], ["Hausa", "Hausa"], ["Pidgin", "Nigerian Pidgin"],
+  ["Português", "Portuguese"], ["Español", "Spanish"], ["አማርኛ", "Amharic"],
+];
+
 export default function AppPage() {
   const [user, setUser] = useState(null);
   const [ready, setReady] = useState(false);
   const [tool, setTool] = useState("about");
+  const [lang, setLang] = useState("English");
 
   useEffect(() => {
     try { const u = JSON.parse(localStorage.getItem("aca_user") || "null"); if (u && u.name) setUser(u); } catch {}
     setReady(true);
   }, []);
   useEffect(() => {
-    if (user) api.event({ event: "section_accessed", user_name: user.name, country: user.country, details: tool });
+    if (user) api.event({ event: "section_accessed", user_name: user.name, country: user.country, language: lang, details: tool });
   }, [tool, user]);
 
   function signOut() { try { localStorage.removeItem("aca_user"); } catch {} setUser(null); }
@@ -64,7 +71,11 @@ export default function AppPage() {
           <Link href="/" className="text-lg font-extrabold tracking-tight text-slate-900">
             AfriCareer <span className="text-[var(--brand)]">AI</span>
           </Link>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3 sm:gap-4">
+            <select value={lang} onChange={(e) => setLang(e.target.value)} title="Response language"
+              className="rounded-lg border border-slate-300 bg-white px-2 py-1.5 text-sm text-slate-700 focus:border-[var(--brand)] focus:outline-none">
+              {LANGUAGES.map(([l, v]) => <option key={v} value={v}>{l}</option>)}
+            </select>
             <span className="hidden text-sm text-slate-500 sm:inline">Hi, {user.name.split(" ")[0]}</span>
             <button onClick={signOut} className="text-sm font-medium text-slate-500 hover:text-slate-900">Sign out</button>
             <Link href="/" className="text-sm font-medium text-slate-500 hover:text-slate-900">Home</Link>
@@ -109,10 +120,10 @@ export default function AppPage() {
             <AnimatePresence mode="wait">
               <motion.div key={tool} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} transition={{ duration: 0.24 }}>
                 {tool === "about" && <About />}
-                {tool === "guidance" && <Guidance />}
+                {tool === "guidance" && <Guidance lang={lang} />}
                 {tool === "learning" && <Learning />}
-                {tool === "assistant" && <Assistant />}
-                {tool === "resume" && <Resume />}
+                {tool === "assistant" && <Assistant lang={lang} />}
+                {tool === "resume" && <Resume lang={lang} />}
                 {tool === "motivation" && <Motivation />}
                 {tool === "jobs" && <Jobs />}
               </motion.div>
@@ -323,14 +334,14 @@ function About() {
 }
 
 /* ---------- Career Guidance ---------- */
-function Guidance() {
+function Guidance({ lang }) {
   const [answers, setAnswers] = useState("");
   const [name, setName] = useState(""); const [email, setEmail] = useState("");
   const [phone, setPhone] = useState(""); const [city, setCity] = useState(""); const [linkedin, setLinkedin] = useState("");
   const [roadmap, setRoadmap] = useState(""); const [cvMsg, setCvMsg] = useState(""); const [showContact, setShowContact] = useState(false);
   const [gLoading, getGuidance] = useRun(async () => {
     if (!answers.trim()) return; setRoadmap("");
-    try { const r = await api.careerGuidance(answers); setRoadmap(r.text || ""); } catch { setRoadmap("Something went wrong. Please try again."); }
+    try { const r = await api.careerGuidance(answers, lang); setRoadmap(r.text || ""); } catch { setRoadmap("Something went wrong. Please try again."); }
   });
   const [cvLoading, genCv] = useRun(async () => {
     if (!answers.trim()) return; setCvMsg("");
@@ -404,11 +415,11 @@ function Learning() {
 }
 
 /* ---------- AI Assistant ---------- */
-function Assistant() {
+function Assistant({ lang }) {
   const [q, setQ] = useState(""); const [out, setOut] = useState("");
   const [loading, run] = useRun(async () => {
     if (!q.trim()) return; setOut("");
-    try { const r = await api.assistant(q); setOut(r.text || ""); } catch { setOut("Something went wrong. Please try again."); }
+    try { const r = await api.assistant(q, lang); setOut(r.text || ""); } catch { setOut("Something went wrong. Please try again."); }
   });
   return (
     <ToolShell icon={I.assistant} title="AI Career Assistant" desc="Ask anything about careers, education, job search, or scholarships - grounded in UNICEF, ILO, AfDB and UNESCO frameworks.">
@@ -421,7 +432,7 @@ function Assistant() {
 }
 
 /* ---------- Résumé Analysis ---------- */
-function Resume() {
+function Resume({ lang }) {
   const [file, setFile] = useState(null); const [city, setCity] = useState(""); const [extra, setExtra] = useState("");
   const [resumeText, setResumeText] = useState(""); const [feedback, setFeedback] = useState("");
   const [position, setPosition] = useState(""); const [company, setCompany] = useState("");
@@ -430,7 +441,7 @@ function Resume() {
     if (!file) return; setFeedback(""); setCvMsg(""); setClMsg("");
     try {
       const ex = await api.extractText(file); const text = ex.text || ""; setResumeText(text);
-      const r = await api.analyzeResume({ resume_text: text, city, additional_info: extra }); setFeedback(r.text || "");
+      const r = await api.analyzeResume({ resume_text: text, city, additional_info: extra, language: lang }); setFeedback(r.text || "");
     } catch { setFeedback("Could not read or analyze that file. Try a text-based PDF, DOCX, or TXT."); }
   });
   const [cvLoading, genCv] = useRun(async () => {
