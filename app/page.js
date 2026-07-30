@@ -58,43 +58,40 @@ export default function Home() {
         </div>
       </header>
 
-      {/* HERO */}
+      {/* HERO - full-bleed rotating photos behind the headline (UniPod style) */}
       <section className="relative overflow-hidden">
-        <div className="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-b from-blue-50/70 to-white" />
-        <div className="mx-auto max-w-4xl px-6 pb-24 pt-20 text-center sm:pt-28">
-          <span className="eyebrow">Free · Multilingual · Built for Africa</span>
-          <h1 className="mt-6 text-5xl font-extrabold leading-[1.05] tracking-tight text-slate-900 sm:text-7xl">
+        <HeroCarousel fill />
+        <div className="relative mx-auto max-w-4xl px-6 pb-28 pt-24 text-center sm:pb-36 sm:pt-32">
+          <span className="inline-block rounded-full border border-white/30 bg-white/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-blue-50 backdrop-blur">
+            Free · Multilingual · Built for Africa
+          </span>
+          <h1 className="mt-6 text-5xl font-extrabold leading-[1.05] tracking-tight text-white drop-shadow-lg sm:text-7xl">
             Career &amp; academic guidance,
-            <span className="block bg-gradient-to-r from-[var(--brand)] to-indigo-500 bg-clip-text text-transparent">
+            <span className="block bg-gradient-to-r from-blue-200 via-white to-indigo-200 bg-clip-text text-transparent">
               built for African talent
             </span>
           </h1>
-          <p className="mx-auto mt-7 max-w-2xl text-lg leading-relaxed text-slate-600 sm:text-xl">
+          <p className="mx-auto mt-7 max-w-2xl text-lg leading-relaxed text-blue-50/90 drop-shadow sm:text-xl">
             Build an ATS-ready CV, generate researched cover and motivation letters, search live jobs and
             scholarships, and find verified courses - all grounded in real evidence and available 24/7.
           </p>
           <div className="mt-9 flex flex-col items-center justify-center gap-4 sm:flex-row">
             <Link href="/app" className="btn-primary text-base">Get started free →</Link>
-            <a href="#features" className="btn-ghost text-base">Explore features</a>
+            <a href="#features" className="rounded-xl border border-white/40 bg-white/10 px-6 py-3 text-base font-semibold text-white backdrop-blur transition hover:bg-white/20">Explore features</a>
           </div>
-          <p className="mt-6 text-sm text-slate-400">No credit card · No signup barriers · Works on any phone</p>
+          <p className="mt-6 text-sm text-blue-100/80">No credit card · No signup barriers · Works on any phone</p>
         </div>
+      </section>
 
-        {/* HERO VISUAL - rotating carousel; add hero.jpg, hero1.jpg, hero2.jpg... in public/ */}
-        <div className="mx-auto max-w-5xl px-6 pb-16">
-          <HeroCarousel />
-        </div>
-
-        {/* STATS BAND */}
-        <div className="mx-auto max-w-5xl px-6 pb-16">
-          <div className="grid grid-cols-2 gap-4 rounded-3xl border border-slate-200 bg-white p-8 shadow-sm sm:grid-cols-4">
-            {[["9", "African languages"], ["7", "AI-powered tools"], ["100%", "Verified links"], ["4", "Evidence frameworks"]].map(([n, l]) => (
-              <div key={l} className="text-center">
-                <div className="text-3xl font-extrabold text-slate-900">{n}</div>
-                <div className="mt-1 text-sm text-slate-500">{l}</div>
-              </div>
-            ))}
-          </div>
+      {/* STATS BAND */}
+      <section className="relative z-10 mx-auto -mt-10 max-w-5xl px-6 pb-8">
+        <div className="grid grid-cols-2 gap-4 rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-900/5 sm:grid-cols-4">
+          {[["9", "African languages"], ["7", "AI-powered tools"], ["100%", "Verified links"], ["4", "Evidence frameworks"]].map(([n, l]) => (
+            <div key={l} className="text-center">
+              <div className="text-3xl font-extrabold text-slate-900">{n}</div>
+              <div className="mt-1 text-sm text-slate-500">{l}</div>
+            </div>
+          ))}
         </div>
       </section>
 
