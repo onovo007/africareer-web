@@ -43,10 +43,13 @@ export default function Home() {
     <main className="min-h-screen">
       {/* NAV */}
       <header className="sticky top-0 z-30 border-b border-slate-100 bg-white/80 backdrop-blur">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-          <span className="text-lg font-extrabold tracking-tight text-slate-900">
-            AfriCareer <span className="text-[var(--brand)]">AI</span>
-          </span>
+        <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-3">
+          <Link href="/" className="flex items-center gap-3">
+            <img src="/logo.png" alt="Quantium Insights" className="h-11 w-11 object-contain sm:h-12 sm:w-12" />
+            <span className="text-lg font-extrabold tracking-tight text-slate-900">
+              AfriCareer <span className="text-[var(--brand)]">AI</span>
+            </span>
+          </Link>
           <nav className="hidden items-center gap-8 text-sm font-medium text-slate-600 md:flex">
             <a href="#features" className="hover:text-slate-900">Features</a>
             <a href="#how" className="hover:text-slate-900">How it works</a>
@@ -180,9 +183,8 @@ export default function Home() {
       <footer className="border-t border-slate-100">
         <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-6 py-10 text-sm text-slate-500 sm:flex-row">
           <div className="flex items-center gap-3">
+            <img src="/logo.png" alt="Quantium Insights" className="h-10 w-10 object-contain" />
             <span className="font-bold text-slate-800">AfriCareer <span className="text-[var(--brand)]">AI</span></span>
-            <span className="text-slate-300">·</span>
-            <span className="inline-block h-9 w-28 bg-contain bg-left bg-no-repeat" style={{ backgroundImage: "url('/logo.png')" }} aria-label="Quantium Insights" title="Quantium Insights" />
           </div>
           <span>© {new Date().getFullYear()} Quantium Insights LLC · Empowering African talent</span>
         </div>
