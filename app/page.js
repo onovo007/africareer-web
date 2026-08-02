@@ -186,6 +186,10 @@ export default function Home() {
             <img src="/logo.png" alt="Quantium Insights" className="h-10 w-10 object-contain" />
             <span className="font-bold text-slate-800">AfriCareer <span className="text-[var(--brand)]">AI</span></span>
           </div>
+          <div className="flex items-center gap-5">
+            <Link href="/privacy" className="hover:text-slate-800">Privacy</Link>
+            <Link href="/terms" className="hover:text-slate-800">Terms</Link>
+          </div>
           <span>© {new Date().getFullYear()} Quantium Insights LLC · Empowering African talent</span>
         </div>
       </footer>

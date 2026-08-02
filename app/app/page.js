@@ -8,6 +8,7 @@ import remarkGfm from "remark-gfm";
 import { api } from "../../lib/api";
 import { SCHOOLS, REGIONS } from "../../lib/schools";
 import { COUNTRIES } from "../../lib/countries";
+import FeedbackBar from "../../components/FeedbackBar";
 
 /* ---------- icons ---------- */
 function Icon({ d, className = "h-6 w-6" }) {
@@ -199,7 +200,7 @@ function SignIn({ onDone }) {
                   className="w-full rounded-xl bg-[var(--brand)] px-6 py-3 font-semibold text-white shadow-lg shadow-blue-900/30 transition hover:bg-[var(--brand-dark)]">
                   Enter AfriCareer AI
                 </motion.button>
-                <p className="text-xs text-slate-400">Free to use. We store your name and country (and email if given) only to improve the service. We never sell your data or share it externally.</p>
+                <p className="text-xs text-slate-400">Free to use. We store your name and country (and email if given) only to improve the service. We never sell your data or share it externally. <Link href="/privacy" className="text-[var(--brand)] hover:underline">Privacy</Link> · <Link href="/terms" className="text-[var(--brand)] hover:underline">Terms</Link></p>
               </div>
             </div>
             <div className="mt-5 flex justify-center">
@@ -393,7 +394,7 @@ function Guidance({ lang }) {
         <Submit loading={cvLoading} onClick={genCv} secondary>{cvLoading ? "Building…" : "Generate premium CV (.docx)"}</Submit>
       </div>
       {cvMsg && <p className="mt-4 font-medium text-slate-700">{cvMsg}</p>}
-      {roadmap && <Result title="Your Career Roadmap"><Markdown>{roadmap}</Markdown></Result>}
+      {roadmap && <Result title="Your Career Roadmap"><Markdown>{roadmap}</Markdown><FeedbackBar tool="career_guidance" lang={lang} /></Result>}
     </ToolShell>
   );
 }
@@ -432,7 +433,7 @@ function Assistant({ lang }) {
       <Label>Your question</Label>
       <textarea className="field" rows={4} value={q} onChange={(e) => setQ(e.target.value)} placeholder="e.g., What digital skills should I build for a data role in Lagos?" />
       <Submit loading={loading} onClick={run}>{loading ? "Thinking…" : "Ask the assistant"}</Submit>
-      {out && <Result><Markdown>{out}</Markdown></Result>}
+      {out && <Result><Markdown>{out}</Markdown><FeedbackBar tool="assistant" lang={lang} /></Result>}
     </ToolShell>
   );
 }
@@ -471,7 +472,7 @@ function Resume({ lang }) {
       <Submit loading={loading} onClick={analyze}>{loading ? "Analyzing…" : "Analyze résumé"}</Submit>
       {feedback && (
         <>
-          <Result title="Your Résumé Analysis"><Markdown>{feedback}</Markdown></Result>
+          <Result title="Your Résumé Analysis"><Markdown>{feedback}</Markdown><FeedbackBar tool="resume_analysis" lang={lang} /></Result>
           <div className="mt-6 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
             <h3 className="font-bold text-slate-900">Generate premium documents</h3>
             <div className="mt-3 grid gap-4 sm:grid-cols-2">
