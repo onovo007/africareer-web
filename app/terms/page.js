@@ -28,7 +28,7 @@ export default function Terms() {
 
       <article className="mx-auto max-w-3xl px-6 py-12">
         <h1 className="text-3xl font-extrabold tracking-tight text-slate-900">Terms of Use</h1>
-        <p className="mt-2 text-sm text-slate-400">Last updated: July 2026</p>
+        <p className="mt-2 text-sm text-slate-400">Effective Date: July 2026</p>
         <p className="mt-6 text-sm leading-relaxed text-slate-600">
           By using AfriCareer AI (the &ldquo;Service&rdquo;), operated by Quantium Insights LLC, you agree to these terms.
           The Service is provided free of charge to support career and academic guidance for African youth and professionals.
@@ -67,7 +67,7 @@ export default function Terms() {
         </Section>
 
         <Section title="7. Contact">
-          <p>Questions about these terms? Email <a className="font-medium text-[var(--brand)] hover:underline" href="mailto:amobiandrewonovo@gmail.com">amobiandrewonovo@gmail.com</a> (Quantium Insights LLC).</p>
+          <p>Questions about these terms? Email <a className="font-medium text-[var(--brand)] hover:underline" href="mailto:dramobionovo@quantiuminsights.com">dramobionovo@quantiuminsights.com</a> (Quantium Insights LLC).</p>
         </Section>
 
         <div className="mt-10 flex gap-4 border-t border-slate-100 pt-6 text-sm">

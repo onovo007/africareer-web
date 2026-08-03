@@ -28,7 +28,7 @@ export default function Privacy() {
 
       <article className="mx-auto max-w-3xl px-6 py-12">
         <h1 className="text-3xl font-extrabold tracking-tight text-slate-900">Privacy Policy</h1>
-        <p className="mt-2 text-sm text-slate-400">Last updated: July 2026</p>
+        <p className="mt-2 text-sm text-slate-400">Effective Date: July 2026</p>
         <p className="mt-6 text-sm leading-relaxed text-slate-600">
           AfriCareer AI is a free service operated by Quantium Insights LLC. We keep data collection to the minimum needed
           to run and improve the service. This policy explains what we collect, why, and your choices.
@@ -66,8 +66,12 @@ export default function Privacy() {
           <p>Providing your email is optional. You can use the core tools with just a name and country. If you would like your usage records removed, contact us at the address below.</p>
         </Section>
 
-        <Section title="7. Contact">
-          <p>Questions about this policy? Email <a className="font-medium text-[var(--brand)] hover:underline" href="mailto:amobiandrewonovo@gmail.com">amobiandrewonovo@gmail.com</a> (Quantium Insights LLC).</p>
+        <Section title="7. Changes to this Privacy Policy">
+          <p>We may update this Privacy Policy from time to time as AfriCareer AI evolves or to comply with legal or operational requirements. Any updates will be posted on this page with the revised effective date.</p>
+        </Section>
+
+        <Section title="8. Contact">
+          <p>Questions about this policy? Email <a className="font-medium text-[var(--brand)] hover:underline" href="mailto:dramobionovo@quantiuminsights.com">dramobionovo@quantiuminsights.com</a> (Quantium Insights LLC).</p>
         </Section>
 
         <div className="mt-10 flex gap-4 border-t border-slate-100 pt-6 text-sm">
