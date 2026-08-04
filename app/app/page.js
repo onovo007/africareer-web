@@ -132,6 +132,16 @@ export default function AppPage() {
           </div>
         </main>
       </div>
+
+      <footer className="mx-auto max-w-6xl px-6 pb-8 text-center text-xs text-slate-400">
+        <div className="border-t border-slate-100 pt-6">
+          <Link href="/privacy" className="hover:text-slate-600">Privacy</Link>
+          <span className="mx-2">·</span>
+          <Link href="/terms" className="hover:text-slate-600">Terms</Link>
+          <span className="mx-2">·</span>
+          © {new Date().getFullYear()} Quantium Insights LLC
+        </div>
+      </footer>
     </div>
   );
 }
