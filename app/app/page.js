@@ -500,6 +500,7 @@ function Motivation() {
       </div>
       <p className="mt-3 text-sm text-slate-600">Automatic presets cover Oxford undergraduate UCAS and Cambridge’s PhD in Public Health and Primary Care only. For other programmes, select the required format and enter the official limits. Research proposals need your original research design and verified literature.</p>
       <Submit loading={loading} onClick={gen}>{loading ? "Drafting and checking…" : "Create draft for review"}</Submit>
+      {loading && <p role="status" className="mt-3 text-sm text-slate-600">Preparing your draft and checking its claims against your input. Doctoral applications may take a few minutes. Keep this page open.</p>}
       {draft && <div className="mt-6 rounded-xl border border-teal-200 bg-teal-50/40 p-5">
         <h3 className="text-xl font-bold">Review your draft</h3><p className="mt-2 text-sm">{draft.review_notice}</p>
         <p className="mt-2 text-sm">This draft uses the inputs saved when you generated it. If you change the programme or background above, generate a new draft.</p>
