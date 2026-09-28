@@ -8,6 +8,7 @@ import remarkGfm from "remark-gfm";
 import { api } from "../../lib/api";
 import { SCHOOLS, REGIONS } from "../../lib/schools";
 
+import CvDraftEditor from "../../components/CvDraftEditor";
 import EvidencePanel from "../../components/EvidencePanel";
 import FeedbackBar from "../../components/FeedbackBar";
 import CareerConversation from "../../components/CareerConversation";
@@ -259,7 +260,7 @@ function About() {
         <h2 className="text-lg font-bold text-slate-900">Understand the sources</h2>
         <p className="mt-1 text-sm text-slate-600">Only reviewed primary documents with traceable references should support evidence claims. When none is retrieved, the answer is general guidance. Source organisations do not endorse this app. <Link href="/knowledge" className="underline text-teal-800">Inspect the reference library.</Link></p>
         <div className="mt-4 flex flex-wrap gap-2">
-          {["AfDB · SEPA", "UNICEF Education Strategy", "ILO Youth Employment", "UNESCO", "Scholarship & PhD best practices"].map((c) => (
+          {["African Union · CESA", "African Continental Qualifications Framework", "UNICEF · Transferable skills", "UNESCO · TVET", "Official university requirements"].map((c) => (
             <span key={c} className="rounded-full bg-blue-50 px-3 py-1 text-sm font-medium text-[var(--brand)]">{c}</span>
           ))}
         </div>
@@ -279,6 +280,7 @@ function About() {
 
 /* ---------- Career Guidance ---------- */
 function Guidance({ lang }) {
+  const [cvDraft,setCvDraft]=useState(null);
   const [error, setError] = useState("");
   const [profileAnswers, setProfileAnswers] = useState(["", "", "", "", ""]);
   const answers = profileAnswers.some(a => a.trim()) ? profileAnswers.map((a, i) => `${i + 1}. ${a}`).join("\n") : "";
@@ -293,7 +295,7 @@ function Guidance({ lang }) {
   const [cvLoading, genCv] = useRun(async () => {
     if (!answers.trim()) { setError("Answer the five prompts before generating a CV."); return; } setError(""); setCvMsg("");
     const contact = [email, phone, city, linkedin].map((x) => x.trim()).filter(Boolean).join(" | ");
-    try { await api.cvFromAnswers({ answers, full_name: name.trim(), contact_line: contact }); setCvMsg("✓ Your CV draft downloaded. Check every fact before using it."); }
+    try { setCvDraft(null); const result=await api.cvDraft({source:"answers",content:answers,full_name:name.trim(),contact_line:contact}); setCvDraft(result); }
     catch (error) { setError(error.message); }
   });
   return (
@@ -330,9 +332,10 @@ function Guidance({ lang }) {
       <p className="mt-3 text-sm text-slate-600">No paid experience is required. Include projects and volunteering. Keep numbers and qualifications factual; review every draft before sending it.</p>
       <div className="mt-2 flex flex-wrap gap-3">
         <Submit loading={gLoading} onClick={getGuidance}>{gLoading ? "Preparing…" : "Get career guidance"}</Submit>
-        <Submit loading={cvLoading} onClick={genCv} secondary>{cvLoading ? "Building…" : "Generate CV draft (.docx)"}</Submit>
+        <Submit loading={cvLoading} onClick={genCv} secondary>{cvLoading ? "Building…" : "Build CV for review"}</Submit>
       </div>
       {cvMsg && <p className="mt-4 font-medium text-slate-700">{cvMsg}</p>}
+      {cvDraft && <CvDraftEditor key={JSON.stringify(cvDraft)} draft={cvDraft} />}
       {error && <p role="alert" className="mt-4 text-red-700">{error}</p>}
       {roadmap && <Result title="Your Career Roadmap"><Markdown>{roadmap}</Markdown><EvidencePanel evidence={evidence} /><FeedbackBar tool="career_guidance" lang={lang} /></Result>}
     </ToolShell>
@@ -371,6 +374,7 @@ function Assistant({ lang }) {
 /* ---------- Résumé Analysis ---------- */
 function Resume({ lang }) {
   const [error, setError] = useState("");
+  const [cvDraft,setCvDraft]=useState(null);
   const [file, setFile] = useState(null); const [city, setCity] = useState(""); const [extra, setExtra] = useState("");
   const [resumeText, setResumeText] = useState(""); const [feedback, setFeedback] = useState("");
   const [position, setPosition] = useState(""); const [company, setCompany] = useState("");
@@ -384,21 +388,21 @@ function Resume({ lang }) {
   });
   const [cvLoading, genCv] = useRun(async () => {
     if (!resumeText) return; setCvMsg("");
-    try { await api.cvFromResume({ resume_text: resumeText, feedback }); setCvMsg("✓ Updated CV downloaded (.docx)."); } catch (error) { setCvMsg(error.message); }
+    try { setCvDraft(null); const result=await api.cvDraft({source:"resume",content:resumeText,feedback}); setCvDraft(result); } catch (error) { setCvMsg(error.message); }
   });
   const [clLoading, genCl] = useRun(async () => {
     if (!resumeText || !position.trim() || !company.trim()) return; setClMsg("");
     try { await api.coverLetter({ resume_text: resumeText, position, company, city }); setClMsg("✓ Cover letter downloaded (.docx)."); } catch (error) { setClMsg(error.message); }
   });
   return (
-    <ToolShell icon={I.resume} title="Professional Résumé Analysis" desc="Upload your résumé for AI feedback tailored to your stated goals - then generate an improved CV and a researched cover letter.">
+    <ToolShell icon={I.resume} title="Professional Résumé Analysis" desc="Upload your résumé for AI feedback tailored to your stated goals - then generate an improved CV and a cover letter based on your facts.">
       <Field label="Upload your résumé (PDF, DOCX, TXT; up to 5 MB)">
-        <input type="file" accept=".pdf,.docx,.txt" onChange={(e) => { setFile(e.target.files?.[0] || null); setResumeText(""); setFeedback(""); setError(""); }}
+        <input type="file" accept=".pdf,.docx,.txt" onChange={(e) => { setFile(e.target.files?.[0] || null); setCvDraft(null); setResumeText(""); setFeedback(""); setError(""); }}
           className="block w-full rounded-xl border border-slate-300 bg-white p-3 text-sm text-slate-600 file:mr-4 file:rounded-lg file:border-0 file:bg-blue-50 file:px-4 file:py-2 file:font-semibold file:text-[var(--brand)]" />
       </Field>
       <div className="mt-4 grid gap-4 sm:grid-cols-2">
         <Field label="Your city (optional)"><input className="field" value={city} onChange={(e) => setCity(e.target.value)} placeholder="Lagos, Nairobi, Accra" /></Field>
-        <Field label="Additional info (optional)"><input className="field" value={extra} onChange={(e) => setExtra(e.target.value)} placeholder="Target industry, preferred roles" /></Field>
+        <Field label="Target job description and priorities (optional)"><textarea className="field" rows={4} maxLength={6000} value={extra} onChange={(e) => setExtra(e.target.value)} placeholder="Paste the job requirements to compare them with your actual experience. Missing requirements are gaps to address, not skills to invent." /></Field>
       </div>
       <Submit loading={loading} onClick={analyze}>{loading ? "Analyzing…" : "Analyze résumé"}</Submit>
       {error && <p role="alert" className="mt-4 text-red-700">{error}</p>}
@@ -412,11 +416,12 @@ function Resume({ lang }) {
               <Field label="Target company / organization"><input className="field" value={company} onChange={(e) => setCompany(e.target.value)} placeholder="WHO, Dangote, Safaricom" /></Field>
             </div>
             <div className="mt-3 flex flex-wrap gap-3">
-              <Submit loading={cvLoading} onClick={genCv}>{cvLoading ? "Building…" : "Generate updated CV (.docx)"}</Submit>
+              <Submit loading={cvLoading} onClick={genCv}>{cvLoading ? "Building…" : "Review updated CV"}</Submit>
               <Submit loading={clLoading} onClick={genCl} secondary>{clLoading ? "Writing…" : "Generate cover letter (.docx)"}</Submit>
             </div>
             {cvMsg && <p className="mt-3 font-medium text-slate-700">{cvMsg}</p>}
             {clMsg && <p className="mt-1 font-medium text-slate-700">{clMsg}</p>}
+            {cvDraft && <CvDraftEditor key={JSON.stringify(cvDraft)} draft={cvDraft} />}
           </div>
         </>
       )}
