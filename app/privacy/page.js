@@ -16,7 +16,7 @@ function Section({ title, children }) {
 
 export default function Privacy() {
   return (
-    <main className="min-h-screen bg-white">
+    <main id="main-content" className="min-h-screen bg-white">
       <header className="border-b border-slate-100">
         <div className="mx-auto flex max-w-3xl items-center justify-between px-6 py-4">
           <Link href="/" className="text-lg font-extrabold tracking-tight text-slate-900">
@@ -28,7 +28,7 @@ export default function Privacy() {
 
       <article className="mx-auto max-w-3xl px-6 py-12">
         <h1 className="text-3xl font-extrabold tracking-tight text-slate-900">Privacy Policy</h1>
-        <p className="mt-2 text-sm text-slate-400">Effective Date: July 2026</p>
+        <p className="mt-2 text-sm text-slate-400">Pilot revision: September 2026</p>
         <p className="mt-6 text-sm leading-relaxed text-slate-600">
           AfriCareer AI is a free service operated by Quantium Insights LLC. We keep data collection to the minimum needed
           to run and improve the service. This policy explains what we collect, why, and your choices.
@@ -36,8 +36,8 @@ export default function Privacy() {
 
         <Section title="1. What we collect">
           <ul className="list-disc space-y-1 pl-5">
-            <li><strong>Sign-in details:</strong> your name and country, and your email address if you choose to provide it (email is optional).</li>
-            <li><strong>Usage events:</strong> which tools you use, the language you select, and your country — so we can understand and improve the service.</li>
+            <li><strong>Browser preferences:</strong> an optional nickname and country, a random participant ID, and your usage-statistics preference. These stay in this browser; a profile is not a secure account.</li>
+            <li><strong>Optional usage events:</strong> if you opt in, we send tool activity, response language, country and a random participant ID to our analytics service. We do not include your nickname, questions or documents in these events.</li>
             <li><strong>Content you submit:</strong> the answers, questions, or documents (e.g. a résumé) you provide are processed to generate your results.</li>
           </ul>
         </Section>
@@ -53,17 +53,17 @@ export default function Privacy() {
         <Section title="4. AI processing & third parties">
           <p>
             To generate responses, the content you submit is sent to trusted processors — OpenAI (for the AI model) and,
-            for live search, Tavily. Usage analytics are stored with Supabase. Please avoid submitting sensitive personal
+            for live search, Tavily. Search embeddings and reference retrieval use Pinecone. The website and API are hosted on Vercel and Render. Optional usage analytics and submitted feedback are stored with Supabase. Hosting providers may process operational logs, such as request metadata, to run and protect the service. Please avoid submitting sensitive personal
             information (such as national ID numbers or financial details) that you would not want processed by these services.
           </p>
         </Section>
 
-        <Section title="5. Data retention">
-          <p>Uploaded documents are processed to produce your output and are not stored as part of your profile. Usage events are retained to support service analytics and improvement.</p>
+        <Section title="5. Browser storage and retention">
+          <p>Browser preferences last for the tab session unless you choose to remember them. Use Clear profile to remove them from this browser. Documents are processed to produce your output and are not saved to your browser profile. Submitted feedback and optional usage events are stored for service improvement; clearing your profile does not delete server records. Contact us to request deletion. Processor retention is governed by their service terms.</p>
         </Section>
 
         <Section title="6. Your choices">
-          <p>Providing your email is optional. You can use the core tools with just a name and country. If you would like your usage records removed, contact us at the address below.</p>
+          <p>You can use the core tools without providing a name, country or email and without enabling usage statistics. Feedback is voluntary; submitting it sends the rating and comment to our team. To change your statistics preference, clear your profile and reopen the workspace. If you would like server records removed, contact us at the address below.</p>
         </Section>
 
         <Section title="7. Changes to this Privacy Policy">
