@@ -16,7 +16,7 @@ function Section({ title, children }) {
 
 export default function Terms() {
   return (
-    <main className="min-h-screen bg-white">
+    <main id="main-content" className="min-h-screen bg-white">
       <header className="border-b border-slate-100">
         <div className="mx-auto flex max-w-3xl items-center justify-between px-6 py-4">
           <Link href="/" className="text-lg font-extrabold tracking-tight text-slate-900">
@@ -31,7 +31,7 @@ export default function Terms() {
         <p className="mt-2 text-sm text-slate-400">Effective Date: July 2026</p>
         <p className="mt-6 text-sm leading-relaxed text-slate-600">
           By using AfriCareer AI (the &ldquo;Service&rdquo;), operated by Quantium Insights LLC, you agree to these terms.
-          The Service is provided free of charge to support career and academic guidance for African youth and professionals.
+          During the pilot, the Service is provided free of charge to support career and academic guidance for African youth and professionals.
         </p>
 
         <Section title="1. Guidance, not professional advice">
@@ -45,7 +45,7 @@ export default function Terms() {
         <Section title="2. AI outputs may contain errors">
           <p>
             AI responses can be incomplete or occasionally incorrect. While we ground answers in trusted frameworks and
-            verify links in real time, you are responsible for reviewing outputs before relying on them. We do not guarantee
+            check candidate links for reachability, you are responsible for reviewing outputs before relying on them. We do not guarantee
             any particular job, admission, scholarship, or other outcome.
           </p>
         </Section>
