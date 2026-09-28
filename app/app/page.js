@@ -523,9 +523,10 @@ function Jobs() {
   const [role, setRole] = useState(""); const [discipline, setDiscipline] = useState(""); const [location, setLocation] = useState("");
   const [period, setPeriod] = useState("Any time"); const [experience, setExperience] = useState("Any"); const [workMode, setWorkMode] = useState("Any"); const [ngo, setNgo] = useState(true);
   const [results, setResults] = useState(null);
+  const [searchInfo, setSearchInfo] = useState(null);
   const [loading, run] = useRun(async () => {
-    if (!role.trim()) { setError("Enter a role or keyword to search."); return; } setError(""); setResults(null);
-    try { const r = await api.jobs({ role, discipline, location, period, experience, work_mode: workMode, include_ngo: ngo }); setResults(r.results || []); } catch (error) { setError(error.message); }
+    if (!role.trim()) { setError("Enter a role or keyword to search."); return; } setError(""); setResults(null); setSearchInfo(null);
+    try { const r = await api.jobs({ role, discipline, location, period, experience, work_mode: workMode, include_ngo: ngo }); setResults(r.results || []); setSearchInfo(r); } catch (error) { setError(error.message); }
   });
   return (
     <ToolShell icon={I.jobs} title="Live Job Search" desc="Explore job listings and job-board searches. Confirm each vacancy, deadline and employer on the original website.">
@@ -543,8 +544,11 @@ function Jobs() {
       </label>
       <Submit loading={loading} onClick={run}>{loading ? "Searching…" : "Search jobs"}</Submit>
       {error && <p role="alert" className="mt-4 text-red-700">{error}</p>}
-      {results && results.length > 0 && <ul className="mt-6 space-y-4">{results.map((j, i) => <LinkCard key={i} href={j.url} title={j.title} meta={`Source: ${j.source} · ${j.verification_level === "posting_metadata" ? "Posting details checked" : "Discovery lead"}`} body={[j.snippet, j.verification].filter(Boolean).join(" ")} />)}</ul>}
-      {results && results.length === 0 && <p className="mt-6 text-slate-500">No results with enough evidence to match every selected filter. Try broader keywords, a different location, or a wider date range.</p>}
+      {searchInfo && <div className="mt-6 rounded-xl bg-teal-50 p-4 text-sm text-slate-700" role="status"><p>{searchInfo.notice}</p>{(searchInfo.warnings || []).map((w,i) => <p key={i}>{w}</p>)}</div>}
+      {results && results.length > 0 && <ul className="mt-6 space-y-4">{results.map((j, i) => <LinkCard key={i} href={j.url} title={j.title} meta={`Source: ${j.source} · ${j.verification_level === "posting_metadata" ? "Posting details checked" : j.verification_level === "board_search" ? "Job-board search" : "Unconfirmed lead"}`} body={[j.snippet, j.verification, ...(j.filter_notes || [])].filter(Boolean).join(" ")} />)}</ul>}
+      {results && results.length === 0 && <p className="mt-6 text-slate-500">No individual matches could be confirmed. This does not mean there are no jobs. Continue with the searches below or broaden your keywords.</p>}
+      {searchInfo?.search_links?.length > 0 && <div className="mt-6 border-t pt-5"><h3 className="font-semibold">Continue your search on job boards</h3><p className="mt-2 text-sm text-slate-600">These links carry your keywords and location. Set date and experience filters on the provider's site. These are search pages, not verified vacancies.</p><ul className="mt-3 space-y-3">{searchInfo.search_links.map(j => <LinkCard key={j.url} href={j.url} title={j.title} meta={j.source} body="Open matching search keywords" />)}</ul></div>}
+
     </ToolShell>
   );
 }
