@@ -54,26 +54,20 @@ export default function AdminPage() {
       if (!res.ok) throw new Error(res.error || "Could not load metrics");
       setData(res);
       setAuthed(true);
-      sessionStorage.setItem("aca_admin", tok);
+      // Keep credentials in memory only.
     } catch (e) {
       setError(e.message || "Failed to load");
       setAuthed(false);
-      sessionStorage.removeItem("aca_admin");
+      try { sessionStorage.removeItem("aca_admin"); } catch {}
     } finally {
       setLoading(false);
     }
   }, []);
 
-  useEffect(() => {
-    const saved = typeof window !== "undefined" ? sessionStorage.getItem("aca_admin") : "";
-    if (saved) {
-      setToken(saved);
-      load(saved);
-    }
-  }, [load]);
+  useEffect(() => { try { sessionStorage.removeItem("aca_admin"); } catch {} }, []);
 
   const signOut = () => {
-    sessionStorage.removeItem("aca_admin");
+    try { sessionStorage.removeItem("aca_admin"); } catch {}
     setAuthed(false);
     setData(null);
     setToken("");
@@ -82,7 +76,7 @@ export default function AdminPage() {
   // ---- Login gate ----
   if (!authed) {
     return (
-      <main className="flex min-h-screen items-center justify-center bg-gradient-to-br from-slate-900 via-[var(--brand-dark)] to-indigo-950 px-6">
+      <main id="main-content" className="flex min-h-screen items-center justify-center bg-gradient-to-br from-slate-900 via-[var(--brand-dark)] to-indigo-950 px-6">
         <div className="w-full max-w-sm rounded-3xl bg-white/95 p-8 shadow-2xl backdrop-blur">
           <h1 className="text-xl font-bold text-slate-900">AfriCareer AI · Admin</h1>
           <p className="mt-1 text-sm text-slate-500">Enter the admin access token to view usage metrics.</p>
@@ -95,6 +89,7 @@ export default function AdminPage() {
           >
             <input
               type="password"
+              aria-label="Admin access token"
               value={token}
               onChange={(e) => setToken(e.target.value)}
               placeholder="Admin token"
@@ -120,7 +115,7 @@ export default function AdminPage() {
 
   // ---- Dashboard ----
   return (
-    <main className="min-h-screen bg-slate-50">
+    <main id="main-content" className="min-h-screen bg-slate-50">
       <header className="border-b border-slate-200 bg-white">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
           <div>
@@ -144,14 +139,15 @@ export default function AdminPage() {
         {data && (
           <>
             <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-              <Stat label="Total events" value={data.total_events} />
-              <Stat label="Unique users" value={data.unique_users} />
-              <Stat label="Logins / visits" value={data.logins} />
-              <Stat label="Countries" value={data.countries.length} />
+              <Stat label="Events in recent sample" value={data.total_events} />
+              <Stat label="Distinct profile identifiers" value={data.unique_users} />
+              <Stat label="Workspace starts" value={data.logins} />
+              <Stat label="Countries shown" value={data.countries.length} />
             </div>
 
             <div className="mt-6 grid gap-4 md:grid-cols-3">
-              <BarTable title="Most-used tools" rows={data.events} />
+              <BarTable title="Most-used tools" rows={data.tools || data.events} />
+              <BarTable title="Saved feedback" rows={data.feedback || []} />
               <BarTable title="Top countries" rows={data.countries} />
               <BarTable title="Languages" rows={data.languages} />
             </div>

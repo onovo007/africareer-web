@@ -1,198 +1,49 @@
 import Link from "next/link";
 import HeroCarousel from "../components/HeroCarousel";
-
-function Icon({ path }) {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" className="h-6 w-6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-      {path}
-    </svg>
-  );
-}
-const icons = {
-  cv: <><path d="M14 3v4a1 1 0 0 0 1 1h4" /><path d="M17 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2Z" /><path d="M9 13h6M9 17h4" /></>,
-  letter: <><rect x="3" y="5" width="18" height="14" rx="2" /><path d="m3 7 9 6 9-6" /></>,
-  search: <><circle cx="11" cy="11" r="7" /><path d="m21 21-4.3-4.3" /></>,
-  book: <><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" /><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z" /></>,
-  globe: <><circle cx="12" cy="12" r="9" /><path d="M3 12h18M12 3a15 15 0 0 1 0 18M12 3a15 15 0 0 0 0 18" /></>,
-  shield: <><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z" /><path d="m9 12 2 2 4-4" /></>,
-};
-
-const FEATURES = [
-  ["cv", "ATS-optimized CVs & resume analysis", "Upload a resume or answer five prompts. Get a premium, recruiter-ready CV with quantified achievements - and an ATS score with concrete fixes."],
-  ["letter", "Cover, motivation & scholarship letters", "Researched cover letters for real jobs, plus motivation letters for undergraduate, PhD and scholarship applications - grounded in live research on the employer or school."],
-  ["search", "Live jobs & scholarships", "Current openings across LinkedIn, Indeed, Glassdoor, plus WHO, UNICEF, Gavi, the UN and other NGOs. Every link is verified in real time."],
-  ["book", "Verified learning links", "Curated free and paid courses from Coursera, edX, freeCodeCamp and more - each link checked live, so you never chase a broken or fake course."],
-  ["globe", "Nine African languages", "Guidance in English, French, Swahili, Arabic, Hausa, Pidgin, Portuguese, Spanish and Amharic - meet learners where they are."],
-  ["shield", "Grounded in real evidence", "Retrieval-augmented answers anchored in UNICEF, ILO, AfDB SEPA and UNESCO frameworks - advice that reflects real policy, not guesswork."],
+const journeys = [
+ ["01", "Build my career", "Turn your strengths into a practical plan.", "guidance"],
+ ["02", "Strengthen my application", "Improve your CV and tell your story clearly.", "resume"],
+ ["03", "Find my next opportunity", "Explore jobs that match your direction.", "jobs"],
+ ["04", "Explore study & scholarships", "Find programmes and prepare a motivation letter.", "motivation"],
 ];
-
-const STEPS = [
-  ["Tell us about you", "Answer a few simple prompts, upload a CV, or describe the role, school or scholarship you're targeting."],
-  ["We research & generate", "The AI grounds every response in trusted frameworks and live web research on your target - no invented facts."],
-  ["Apply with confidence", "Download a polished CV or letter, open verified job and course links, and act on a clear, personalized plan."],
+const features = [
+ ["Career direction", "A starting point that fits your life.", "Explore your interests, experience and ambitions. Get a practical roadmap, whether you are starting out or changing direction.", "guidance", "↗"],
+ ["CVs & applications", "Your experience, expressed clearly.", "Review your résumé, build an editable CV, and draft a tailored cover letter. Keep every achievement true to your experience.", "resume", "≡"],
+ ["Jobs & learning", "Make your next move an informed one.", "Discover job boards, courses and study opportunities. Check eligibility, fees and closing dates on the provider’s website.", "learning", "◎"],
 ];
-
-const AUDIENCES = [
-  ["Youth", "First-time jobseekers building a CV, exploring careers, and finding free skills to grow - no experience required."],
-  ["Professionals", "Mid-career talent upgrading CVs, writing researched cover letters, and tracking live roles across companies and NGOs."],
-  ["Students", "Applicants to undergraduate, master's, PhD and scholarship programmes, with motivation letters tailored to each school."],
-];
-
 export default function Home() {
-  return (
-    <main className="min-h-screen">
-      {/* NAV */}
-      <header className="sticky top-0 z-30 border-b border-slate-100 bg-white/80 backdrop-blur">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-3">
-          <Link href="/" className="flex items-center gap-3">
-            <img src="/logo.png" alt="Quantium Insights" className="h-11 w-11 object-contain sm:h-12 sm:w-12" />
-            <span className="text-lg font-extrabold tracking-tight text-slate-900">
-              AfriCareer <span className="text-[var(--brand)]">AI</span>
-            </span>
-          </Link>
-          <nav className="hidden items-center gap-8 text-sm font-medium text-slate-600 md:flex">
-            <a href="#features" className="hover:text-slate-900">Features</a>
-            <a href="#how" className="hover:text-slate-900">How it works</a>
-            <a href="#who" className="hover:text-slate-900">Who it's for</a>
-          </nav>
-          <Link href="/app" className="rounded-lg bg-[var(--brand)] px-4 py-2 text-sm font-semibold text-white transition hover:bg-[var(--brand-dark)]">
-            Launch app
-          </Link>
-        </div>
-      </header>
-
-      {/* HERO - full-bleed rotating photos behind the headline (UniPod style) */}
-      <section className="relative overflow-hidden">
-        <HeroCarousel fill />
-        <div className="relative mx-auto max-w-4xl px-6 pb-28 pt-24 text-center sm:pb-36 sm:pt-32">
-          <span className="inline-block rounded-full border border-white/30 bg-white/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-blue-50 backdrop-blur">
-            Free · Multilingual · Built for Africa
-          </span>
-          <h1 className="mt-6 text-5xl font-extrabold leading-[1.05] tracking-tight text-white drop-shadow-lg sm:text-7xl">
-            Career &amp; academic guidance,
-            <span className="block bg-gradient-to-r from-blue-200 via-white to-indigo-200 bg-clip-text text-transparent">
-              built for African talent
-            </span>
-          </h1>
-          <p className="mx-auto mt-7 max-w-2xl text-lg leading-relaxed text-blue-50/90 drop-shadow sm:text-xl">
-            Build an ATS-ready CV, generate researched cover and motivation letters, search live jobs and
-            scholarships, and find verified courses - all grounded in real evidence and available 24/7.
-          </p>
-          <div className="mt-9 flex flex-col items-center justify-center gap-4 sm:flex-row">
-            <Link href="/app" className="btn-primary text-base">Get started free →</Link>
-            <a href="#features" className="rounded-xl border border-white/40 bg-white/10 px-6 py-3 text-base font-semibold text-white backdrop-blur transition hover:bg-white/20">Explore features</a>
-          </div>
-          <p className="mt-6 text-sm text-blue-100/80">No credit card · No signup barriers · Works on any phone</p>
-        </div>
-      </section>
-
-      {/* STATS BAND */}
-      <section className="relative z-10 mx-auto -mt-10 max-w-5xl px-6 pb-8">
-        <div className="grid grid-cols-2 gap-4 rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-900/5 sm:grid-cols-4">
-          {[["9", "African languages"], ["7", "AI-powered tools"], ["100%", "Verified links"], ["4", "Evidence frameworks"]].map(([n, l]) => (
-            <div key={l} className="text-center">
-              <div className="text-3xl font-extrabold text-slate-900">{n}</div>
-              <div className="mt-1 text-sm text-slate-500">{l}</div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* FEATURES */}
-      <section id="features" className="mx-auto max-w-6xl px-6 py-20">
-        <div className="mx-auto max-w-2xl text-center">
-          <span className="eyebrow">Everything in one place</span>
-          <h2 className="mt-4 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">One assistant for your whole journey</h2>
-          <p className="mt-4 text-slate-600">From your first CV to a PhD scholarship letter - every tool is grounded, verified, and free.</p>
-        </div>
-        <div className="mt-14 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {FEATURES.map(([ic, title, desc]) => (
-            <div key={title} className="card group">
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-50 text-[var(--brand)] transition group-hover:bg-[var(--brand)] group-hover:text-white">
-                <Icon path={icons[ic]} />
-              </div>
-              <h3 className="mt-5 text-lg font-semibold text-slate-900">{title}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-slate-600">{desc}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* HOW IT WORKS */}
-      <section id="how" className="border-y border-slate-100 bg-slate-50/60">
-        <div className="mx-auto max-w-6xl px-6 py-20">
-          <div className="mx-auto max-w-2xl text-center">
-            <span className="eyebrow">How it works</span>
-            <h2 className="mt-4 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">Three steps to a stronger application</h2>
-          </div>
-          <div className="mt-14 grid gap-8 md:grid-cols-3">
-            {STEPS.map(([title, desc], i) => (
-              <div key={title} className="relative">
-                <div className="flex h-11 w-11 items-center justify-center rounded-full bg-[var(--brand)] text-lg font-bold text-white">{i + 1}</div>
-                <h3 className="mt-5 text-lg font-semibold text-slate-900">{title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-slate-600">{desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* AUDIENCES */}
-      <section id="who" className="mx-auto max-w-6xl px-6 py-20">
-        <div className="mx-auto max-w-2xl text-center">
-          <span className="eyebrow">Who it's for</span>
-          <h2 className="mt-4 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">Made for youth, professionals &amp; students</h2>
-        </div>
-        <div className="mt-14 grid gap-6 md:grid-cols-3">
-          {AUDIENCES.map(([title, desc]) => (
-            <div key={title} className="card">
-              <h3 className="text-xl font-bold text-slate-900">{title}</h3>
-              <p className="mt-3 text-sm leading-relaxed text-slate-600">{desc}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* EVIDENCE */}
-      <section className="border-t border-slate-100 bg-slate-50/60">
-        <div className="mx-auto max-w-5xl px-6 py-16 text-center">
-          <h2 className="text-2xl font-bold text-slate-900">Grounded in trusted, global evidence</h2>
-          <p className="mx-auto mt-3 max-w-2xl text-slate-600">
-            Every answer is retrieval-augmented from authoritative youth-employment and education frameworks.
-          </p>
-          <div className="mt-8 flex flex-wrap items-center justify-center gap-x-10 gap-y-4 text-lg font-semibold text-slate-400">
-            <span>UNICEF</span><span>ILO</span><span>AfDB · SEPA</span><span>UNESCO</span>
-          </div>
-        </div>
-      </section>
-
-      {/* CTA */}
-      <section className="mx-auto max-w-6xl px-6 py-20">
-        <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[var(--brand)] to-indigo-600 px-8 py-16 text-center text-white shadow-2xl shadow-blue-600/20 sm:px-16">
-          <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">Your next opportunity starts here</h2>
-          <p className="mx-auto mt-4 max-w-xl text-blue-50">
-            Free, multilingual, and built for African youth and professionals. Launch the app and get your first CV, letter, or job list in minutes.
-          </p>
-          <Link href="/app" className="mt-8 inline-flex rounded-xl bg-white px-7 py-3.5 font-semibold text-[var(--brand)] shadow-lg transition hover:-translate-y-0.5">
-            Get started free →
-          </Link>
-        </div>
-      </section>
-
-      {/* FOOTER */}
-      <footer className="border-t border-slate-100">
-        <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-6 py-10 text-sm text-slate-500 sm:flex-row">
-          <div className="flex items-center gap-3">
-            <img src="/logo.png" alt="Quantium Insights" className="h-10 w-10 object-contain" />
-            <span className="font-bold text-slate-800">AfriCareer <span className="text-[var(--brand)]">AI</span></span>
-          </div>
-          <div className="flex items-center gap-5">
-            <Link href="/privacy" className="hover:text-slate-800">Privacy</Link>
-            <Link href="/terms" className="hover:text-slate-800">Terms</Link>
-          </div>
-          <span>© {new Date().getFullYear()} Quantium Insights LLC · Empowering African talent</span>
-        </div>
-      </footer>
-    </main>
-  );
+ return <main id="main-content">
+  <div className="home-masthead">
+   <HeroCarousel fill />
+   <header className="site-header">
+    <Link href="/" className="wordmark"><span className="brand-mark">a<span>↗</span></span><span>AfriCareer <b>AI</b><small>BY QUANTIUM INSIGHTS</small></span></Link>
+    <nav aria-label="Main navigation"><a href="#tools">The tools</a><a href="#how">How it works</a><a href="#pilot">The pilot</a></nav>
+    <Link href="/app" className="header-launch">Open workspace <span aria-hidden="true">↗</span></Link>
+   </header>
+   <section className="hero-layout" aria-labelledby="hero-title">
+    <div className="hero-copy">
+     <p className="overline"><span className="status-dot" /> AFRICAN TALENT. POSSIBILITIES AHEAD.</p>
+     <h1 id="hero-title">Your ambition.<br />A clearer <em>way forward.</em></h1>
+     <p className="hero-description">From your first CV to your next career move. Find direction, strengthen your applications, and explore opportunities with guidance built around you.</p>
+     <div className="hero-actions"><Link href="/app?tool=guidance" className="mint-button">Find my starting point <span aria-hidden="true">↗</span></Link><a href="#how" className="quiet-link">See how it works <span aria-hidden="true">↓</span></a></div>
+     <div className="hero-facts"><div><strong>9</strong><span>response languages</span></div><div><strong>One</strong><span>career workspace</span></div><div><strong>Free</strong><span>during the pilot</span></div></div>
+     <p className="hero-note">For students, first-time jobseekers and professionals.</p>
+    </div>
+    <div className="journey-panel">
+     <p className="overline">START WHERE YOU ARE</p><h2>What’s your next step?</h2><p>Choose a goal. We’ll help you get moving.</p>
+     <div className="journey-list">{journeys.map(([n,title,desc,tool]) => <Link key={tool} href={`/app?tool=${tool}`} className="journey-link"><span className="journey-number">{n}</span><span><strong>{title}</strong><small>{desc}</small></span><span className="journey-arrow" aria-hidden="true">↗</span></Link>)}</div>
+     <div className="panel-note"><span aria-hidden="true">◈</span> No payment needed. Your feedback shapes what comes next.</div>
+    </div>
+   </section>
+   <div className="hero-bottom"><span>LOCAL CONTEXT. GLOBAL OPPORTUNITIES.</span><span>EXPLORE WHAT’S POSSIBLE <span aria-hidden="true">↓</span></span></div>
+  </div>
+  <section id="tools" className="editorial-section">
+   <div className="section-intro"><div><p className="overline">PRACTICAL SUPPORT, AT EVERY STAGE</p><h2>Big ambitions.<br /><em>Manageable next steps.</em></h2></div><p>You bring the experience and the aspirations. AfriCareer AI helps you put them into words, a plan, and action.</p></div>
+   <div className="feature-grid">{features.map(([tag,title,desc,tool,icon]) => <article className="feature-tile" key={tag}><span className="feature-icon" aria-hidden="true">{icon}</span><p className="overline">{tag}</p><h3>{title}</h3><p>{desc}</p><Link href={`/app?tool=${tool}`}>Explore the tool <span aria-hidden="true">↗</span></Link></article>)}</div>
+  </section>
+  <section id="how" className="how-section"><div className="editorial-section"><p className="overline">FROM A QUESTION TO A NEXT STEP</p><h2>A little context goes a long way.</h2><div className="steps-grid">{[["01","Tell us what you need","Describe your goal, answer a few prompts, or upload a résumé. Share only what the task needs."],["02","Explore your options","Get AI guidance supported by available reference material and web research. Ask questions and compare possibilities."],["03","Make it your own","Review the facts, edit your document, and choose a next step. You stay in charge of every application."]].map(([n,t,d]) => <article key={n}><span>{n}</span><h3>{t}</h3><p>{d}</p></article>)}</div></div></section>
+  <section className="editorial-section evidence-section"><div><p className="overline">DESIGNED TO HELP YOU THINK AHEAD</p><h2>Useful guidance.<br /><em>Room for your judgment.</em></h2></div><div><p>We are auditing source documents from AfDB, UNICEF, ILO and UNESCO for traceable career and education guidance. General AI advice should not be treated as verified policy evidence. These organisations do not endorse AfriCareer AI.</p><p>AI can miss context or make mistakes. A reachable link does not confirm that a job is open or a scholarship is suitable. Review your documents and check important details with the original provider.</p><Link href="/privacy">Understand how your information is used ↗</Link></div></section>
+  <section id="pilot" className="pilot-section"><div><p className="overline">HELP SHAPE AFRICAREER AI</p><h2>Your next chapter.<br /><em>Our next improvement.</em></h2><p>We’re preparing AfriCareer AI with feedback from people who use it. Try the tools during the free pilot and tell us what helped, what was confusing, and what you need next.</p><Link href="/app" className="mint-button">Explore the pilot workspace ↗</Link></div><div className="pilot-details"><span>THE PILOT EXPERIENCE</span><p>Try a real career or study task.</p><p>Review the result in your own context.</p><p>Use the feedback buttons to help us improve.</p><small>No card required. No payment during the pilot.</small></div></section>
+  <footer className="site-footer"><Link href="/" className="footer-brand">AfriCareer AI</Link><span>Built for the possibilities ahead.</span><div><Link href="/privacy">Privacy</Link><Link href="/terms">Terms</Link><a href="mailto:dramobionovo@quantiuminsights.com">Contact</a></div><small>© {new Date().getFullYear()} Quantium Insights LLC</small></footer>
+ </main>;
 }
