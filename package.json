@@ -6,19 +6,22 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "check": "next build"
   },
   "dependencies": {
-    "framer-motion": "11.11.9",
-    "next": "14.2.15",
-    "react": "18.3.1",
-    "react-dom": "18.3.1",
+    "framer-motion": "13.4.4",
+    "next": "15.5.26",
+    "react": "19.2.4",
+    "react-dom": "19.2.4",
     "react-markdown": "9.0.1",
     "remark-gfm": "4.0.0"
   },
   "devDependencies": {
     "autoprefixer": "10.4.20",
-    "postcss": "8.4.47",
+    "postcss": "8.5.28",
     "tailwindcss": "3.4.14"
+  },
+  "overrides": {
+    "postcss": "$postcss"
   }
 }
